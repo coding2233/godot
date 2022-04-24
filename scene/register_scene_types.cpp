@@ -121,6 +121,7 @@
 #include "scene/gui/tree.h"
 #include "scene/gui/video_player.h"
 #include "scene/gui/viewport_container.h"
+#include "scene/imgui/native_imgui.h"
 #include "scene/main/canvas_layer.h"
 #include "scene/main/http_request.h"
 #include "scene/main/instance_placeholder.h"
@@ -331,7 +332,8 @@ void register_scene_types() {
 	ClassDB::register_class<CenterContainer>();
 	ClassDB::register_class<ScrollContainer>();
 	ClassDB::register_class<PanelContainer>();
-
+	ClassDB::register_class<ImGuiControl>();
+	
 	OS::get_singleton()->yield(); //may take time to init
 
 	ClassDB::register_class<TextureProgress>();
