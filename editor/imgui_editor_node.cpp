@@ -1,8 +1,11 @@
 #include "imgui_editor_node.h"
 #include "editor/editor_node.h"
+#include "scene/imgui/imgui_canvas.h"
 
 ImGuiEditorNode::ImGuiEditorNode(/* args */)
 {
+    ImGuiCanvas *imgui_canvs= memnew(ImGuiCanvas);
+    add_child(imgui_canvs);
 }
 
 ImGuiEditorNode::~ImGuiEditorNode()
