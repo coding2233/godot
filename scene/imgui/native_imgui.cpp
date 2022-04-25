@@ -948,7 +948,6 @@ void ImGuiControl::draw() {
 
 }
  
-
 void ImGuiControl::RebuildFontAtlas() {
 }
 

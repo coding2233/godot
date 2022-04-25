@@ -78,6 +78,7 @@
 #include "editor/editor_translation.h"
 #include "editor/progress_dialog.h"
 #include "editor/project_manager.h"
+#include "editor/imgui_editor_node.h"
 #ifndef NO_EDITOR_SPLASH
 #include "main/splash_editor.gen.h"
 #endif
@@ -1333,6 +1334,7 @@ Error Main::setup2(Thread::ID p_main_tid_override) {
 #else
 	bool show_logo = true;
 #endif
+	show_logo=false;
 
 	if (init_screen != -1) {
 		OS::get_singleton()->set_current_screen(init_screen);
@@ -1860,9 +1862,12 @@ bool Main::start() {
 
 #ifdef TOOLS_ENABLED
 		EditorNode *editor_node = nullptr;
+		ImGuiEditorNode *imgui_editor_node = nullptr;
 		if (editor) {
 			editor_node = memnew(EditorNode);
+			imgui_editor_node = memnew(ImGuiEditorNode);
 			sml->get_root()->add_child(editor_node);
+			sml->get_root()->add_child(imgui_editor_node);
 
 			if (_export_preset != "") {
 				editor_node->export_preset(_export_preset, positional_arg, export_debug, export_pack_only);
