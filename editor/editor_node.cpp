@@ -204,6 +204,8 @@
 #include "editor/register_exporters.h"
 #include "editor/scene_tree_dock.h"
 
+#include "scene/imgui/imgui_control.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -6128,6 +6130,8 @@ EditorNode::EditorNode() {
 	gui_base = memnew(Panel);
 	theme_base->add_child(gui_base);
 	gui_base->set_anchors_and_offsets_preset(Control::PRESET_WIDE);
+	
+	gui_base->add_child(memnew(ImGuiControl));
 
 	theme_base->set_theme(theme);
 	gui_base->set_theme(theme);

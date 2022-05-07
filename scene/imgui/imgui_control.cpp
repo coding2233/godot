@@ -13,8 +13,8 @@ RenderingServer *ImGuiControl::rendering_server;
 
 ImGuiControl::ImGuiControl()
 {
-    set_process_input(true);
-    if (context == nullptr) {
+    if (context == nullptr) 
+    {
 		context = ImGui::CreateContext();
 		ImGuiIO &io = ImGui::GetIO();
 		io.BackendFlags = 0;
@@ -84,6 +84,14 @@ ImGuiControl::ImGuiControl()
 		pos_strings.push_back(0);
 		curr_pos = 0;
 	}
+
+    set_process_input(true);
+    set_as_top_level(true);
+    // set_position(Vector2(0, 0));	
+    // Vector2i control_window_size = DisplayServer::get_singleton()->window_get_size();
+	// set_position(Vector2(0, 0));
+	// set_size(Vector2(control_window_size.x,control_window_size.y));
+	// set_focus_mode(FOCUS_ALL);
 }
 
 ImGuiControl::~ImGuiControl()
@@ -92,6 +100,8 @@ ImGuiControl::~ImGuiControl()
 
 void ImGuiControl::input(const Ref<InputEvent> &p_event) 
 {
+    print_line("void ImGuiControl::input(const Ref<InputEvent> &p_event) ");
+
     bool consumed = false; 
 	ImGuiIO &io = ImGui::GetIO();
 
@@ -107,7 +117,6 @@ void ImGuiControl::input(const Ref<InputEvent> &p_event)
 			code = FixKey((Key)code);
 			io.KeysDown[code] = keyevt->is_pressed();
 		}
-
 
 		consumed = io.WantCaptureKeyboard; 
 	 
@@ -152,12 +161,21 @@ void ImGuiControl::input(const Ref<InputEvent> &p_event)
 void ImGuiControl::NewFrame() 
 {
 	ImGui::NewFrame();
+    
+    // ImGui::SetNextWindowSize(ImVec2(400,300));
+    // bool show=true;
+    // ImGui::Begin("Hello imgui window",&show);
+    // ImGui::End();
+    bool showDemo = true;
+    ImGui::ShowDemoWindow(&showDemo);
 }
 
 void ImGuiControl::EndFrame() 
 {
 	ImGui::EndFrame();
     
+    Render();
+
     curr_pos = 0;
     for (auto &it : pos_strings)
         it = 0;
