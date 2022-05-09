@@ -86,7 +86,7 @@ ImGuiControl::ImGuiControl()
 	}
 
     set_process_input(true);
-    set_as_top_level(true);
+    // set_as_top_level(true);
     // set_position(Vector2(0, 0));	
     // Vector2i control_window_size = DisplayServer::get_singleton()->window_get_size();
 	// set_position(Vector2(0, 0));

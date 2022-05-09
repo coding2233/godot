@@ -205,6 +205,7 @@
 #include "editor/scene_tree_dock.h"
 
 #include "scene/imgui/imgui_control.h"
+#include "scene/imgui/imgui_window.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -6131,7 +6132,11 @@ EditorNode::EditorNode() {
 	theme_base->add_child(gui_base);
 	gui_base->set_anchors_and_offsets_preset(Control::PRESET_WIDE);
 	
-	gui_base->add_child(memnew(ImGuiControl));
+	// gui_base->add_child(memnew(ImGuiControl));
+
+	ImGuiWindow * iw= memnew(ImGuiWindow);
+	add_child(iw);
+	iw->popup_centered(Size2i(800,600));
 
 	theme_base->set_theme(theme);
 	gui_base->set_theme(theme);
