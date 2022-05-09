@@ -1752,6 +1752,8 @@ Error Main::setup2(Thread::ID p_main_tid_override) {
 	bool show_logo = true;
 #endif
 
+	show_logo=false;
+
 	if (init_screen != -1) {
 		DisplayServer::get_singleton()->window_set_current_screen(init_screen);
 	}
