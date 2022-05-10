@@ -18,6 +18,7 @@ ImGuiControl::ImGuiControl()
 		context = ImGui::CreateContext();
 		ImGuiIO &io = ImGui::GetIO();
 		io.BackendFlags = 0;
+		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 #ifdef JAVASCRIPT_ENABLED
 		io.IniFilename = NULL; 
 #endif
