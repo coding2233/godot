@@ -37,6 +37,7 @@ class ImGuiControl : public Control
 
     Vector<Vector<ArrayMesh*>> mesh_dict;
 	Vector<Vector<RID>> child_dict;
+	Vector<RID> child_dict_parent;
 
     unsigned int FixKey(Key kc);
     void Render();

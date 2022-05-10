@@ -252,9 +252,12 @@ void ImGuiControl::Draw()
 
 	for (uint32_t i = child_dict.size(); i < drawData->CmdListsCount; i++)
     { 
-
 		 child_dict.push_back(Vector<RID>());
 		 mesh_dict.push_back(Vector<ArrayMesh *>());
+
+		 RID item_parent = rendering_server->canvas_item_create();
+		 rendering_server->canvas_item_set_parent(item_parent, get_canvas_item());
+		 child_dict_parent.push_back(item_parent);
 	}
 
 
@@ -290,6 +293,8 @@ void ImGuiControl::Draw()
 			colors.push_back(godotCol);
 		}
 
+		
+
 		for (uint32_t j = 0; j < cmdList->CmdBuffer.size(); j++) 
         {
 			for (uint32_t k = child_dict[i].size(); k < cmdList->CmdBuffer.size(); k++) {
@@ -297,11 +302,10 @@ void ImGuiControl::Draw()
 				RID child = rendering_server->canvas_item_create();
 				const_cast<Vector<RID> &>(child_dict[i]).push_back(child);
 				const_cast<Vector<ArrayMesh *> &>(mesh_dict[i]).push_back(memnew(ArrayMesh));
-
-				rendering_server->canvas_item_set_parent(child_dict[i][k], get_canvas_item());
+				rendering_server->canvas_item_set_parent(child_dict[i][k], child_dict_parent[i]);
 			}
+		
 
-	
 			ImDrawCmd *cmd = &cmdList->CmdBuffer[j];
 	
 			//ImVec2 pos = drawData->DisplayPos; will be a thing when we have more viewports
@@ -334,7 +338,6 @@ void ImGuiControl::Draw()
 			rendering_server->canvas_item_add_mesh(child_dict[i][j], mesh_dict[i][j]->get_rid(), Transform2D(), Color(1,1,1,1), imgtex.get_rid());
 			indices.clear();
 		}
-		
 	}
 
 }
