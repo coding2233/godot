@@ -39,9 +39,13 @@ class ImGuiControl : public Control
 	Vector<Vector<RID>> child_dict;
 	Vector<RID> child_dict_parent;
 
+    Size2 imgui_control_size;
+
     unsigned int FixKey(Key kc);
     void Render();
     void Draw();
+
+
 
 protected:
     virtual void input(const Ref<InputEvent> &p_event) override;

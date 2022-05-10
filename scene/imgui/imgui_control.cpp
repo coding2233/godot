@@ -86,6 +86,7 @@ ImGuiControl::ImGuiControl()
 	}
 
     set_process_input(true);
+	set_anchors_and_offsets_preset(PRESET_WIDE,PRESET_MODE_KEEP_SIZE,0);
     // set_as_top_level(true);
     // set_position(Vector2(0, 0));	
     // Vector2i control_window_size = DisplayServer::get_singleton()->window_get_size();
@@ -160,6 +161,13 @@ void ImGuiControl::input(const Ref<InputEvent> &p_event)
 
 void ImGuiControl::NewFrame() 
 {
+	Size2 ics = get_size();
+	if(imgui_control_size!=ics)
+	{
+		// print_line(vformat("ImGuiControl::NewFrame get_size x:%f y%f"),ics.x,ics.y);
+		ImGui::GetIO().DisplaySize = ImVec2(ics.x,ics.y);
+		imgui_control_size=ics;
+	}
 	ImGui::NewFrame();
     
     // ImGui::SetNextWindowSize(ImVec2(400,300));
