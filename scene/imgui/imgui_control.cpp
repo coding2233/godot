@@ -44,7 +44,7 @@ ImGuiControl::ImGuiControl()
 	 
 		imgtex.create_from_image(img.duplicate());
 
-		io.Fonts->TexID = ImTextureID(texture_count++);
+		io.Fonts->TexID = ImTextureID();
 
 		io.Fonts->ClearTexData();
 
