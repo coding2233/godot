@@ -6127,8 +6127,7 @@ EditorNode::EditorNode() {
 		textfile_extensions.insert(E);
 	}
 
-	editor_imgui_window = memnew(ImGuiWindow);
-	add_child(editor_imgui_window);
+
 
 	theme_base = memnew(Control);
 	add_child(theme_base);
@@ -6141,6 +6140,9 @@ EditorNode::EditorNode() {
 	theme_base->set_theme(theme);
 	gui_base->set_theme(theme);
 	gui_base->add_theme_style_override("panel", gui_base->get_theme_stylebox(SNAME("Background"), SNAME("EditorStyles")));
+
+	editor_imgui_window = memnew(ImGuiWindow);
+	theme_base->add_child(editor_imgui_window);
 
 	resource_preview = memnew(EditorResourcePreview);
 	add_child(resource_preview);

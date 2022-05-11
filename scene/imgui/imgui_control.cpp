@@ -24,7 +24,7 @@ ImGuiControl::ImGuiControl()
 #endif
 		// ImGui::SetCurrentContext(context);
 		//ImGui::StyleColorsDark();
-		io.Fonts->AddFontDefault();
+		// io.Fonts->AddFontDefault();
 		io.MouseDrawCursor = false;
 		this->rendering_server = RenderingServer::get_singleton();
 		// int width, height, bytesPerPixel;
@@ -120,29 +120,29 @@ ImGuiControl::~ImGuiControl()
 
     void ImGuiControl::GetImageTexture()
 	{
-		ImGuiIO &io = ImGui::GetIO();
+		if(imgtex.get_width()==0||imgtex.get_height()==0)
+		{
+			ImGuiIO &io = ImGui::GetIO();
 
-				io.Fonts->AddFontDefault();
-		io.MouseDrawCursor = false;
-		int width, height, bytesPerPixel;
-		unsigned char *pixels = NULL;
-		io.Fonts->GetTexDataAsRGBA32(&pixels, &width, &height, &bytesPerPixel);
+			io.Fonts->AddFontDefault();
+			io.MouseDrawCursor = false;
+			int width, height, bytesPerPixel;
+			unsigned char *pixels = NULL;
+			io.Fonts->GetTexDataAsRGBA32(&pixels, &width, &height, &bytesPerPixel);
 
-		Vector<uint8_t> textureDataRaw;
+			Vector<uint8_t> textureDataRaw;
 
-		for (uint32_t i = 0; i < width * height * bytesPerPixel; i++) {
-			textureDataRaw.push_back(pixels[i]);
+			for (uint32_t i = 0; i < width * height * bytesPerPixel; i++) {
+				textureDataRaw.push_back(pixels[i]);
+			}
+		
+			Image img(width, height, false, Image::Format::FORMAT_RGBA8, textureDataRaw);
+		
+			imgtex.create_from_image(img.duplicate());
+
+			io.Fonts->TexID = ImTextureID(texture_count++);
+			io.Fonts->ClearTexData();
 		}
-
-	
-		Image img(width, height, false, Image::Format::FORMAT_RGBA8, textureDataRaw);
-
-	
-		imgtex.create_from_image(img.duplicate());
-
-		io.Fonts->TexID = ImTextureID(texture_count++);
-
-		io.Fonts->ClearTexData();
 	}
 
 
