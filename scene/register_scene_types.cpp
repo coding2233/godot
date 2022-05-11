@@ -211,6 +211,7 @@
 #include "scene/scene_string_names.h"
 
 #include "scene/main/shader_globals_override.h"
+#include "scene/imgui/imgui_window.h"
 
 #ifndef _3D_DISABLED
 #include "scene/3d/area_3d.h"
@@ -399,6 +400,8 @@ void register_scene_types() {
 
 	GDREGISTER_CLASS(AcceptDialog);
 	GDREGISTER_CLASS(ConfirmationDialog);
+	GDREGISTER_CLASS(ImGuiWindow);
+	GDREGISTER_CLASS(ImGuiControl);
 
 	GDREGISTER_CLASS(MarginContainer);
 	GDREGISTER_CLASS(SubViewportContainer);

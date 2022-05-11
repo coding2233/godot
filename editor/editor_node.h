@@ -95,6 +95,7 @@ class TabContainer;
 class TextureProgressBar;
 class VSplitContainer;
 class Window;
+class ImGuiWindow;
 
 class EditorNode : public Node {
 	GDCLASS(EditorNode, Node);
@@ -196,6 +197,7 @@ private:
 		SETTINGS_TOGGLE_FULLSCREEN,
 		SETTINGS_HELP,
 		SCENE_TAB_CLOSE,
+		SETTINGS_IMGUI_EDITOR,
 
 		EDITOR_SCREENSHOT,
 		EDITOR_OPEN_SCREENSHOT,
@@ -267,6 +269,7 @@ private:
 	EditorRunNative *run_native = nullptr;
 	EditorSelection *editor_selection = nullptr;
 	EditorSettingsDialog *editor_settings_dialog = nullptr;
+	ImGuiWindow *editor_imgui_window = nullptr;
 
 	ProjectExportDialog *project_export = nullptr;
 	ProjectSettingsEditor *project_settings_editor = nullptr;

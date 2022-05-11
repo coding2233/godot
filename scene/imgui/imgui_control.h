@@ -48,12 +48,14 @@ class ImGuiControl : public Control
 
 
 protected:
-    virtual void input(const Ref<InputEvent> &p_event) override;
+    // virtual void input(const Ref<InputEvent> &p_event) override;
 public:
     ImGuiControl();
 	~ImGuiControl();
 
 	void NewFrame();
     void EndFrame();
+
+    void _window_input(const Ref<InputEvent> &p_event);
 };
 #endif

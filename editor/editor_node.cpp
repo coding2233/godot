@@ -2877,6 +2877,9 @@ void EditorNode::_menu_option_confirm(int p_option, bool p_confirmed) {
 		case SETTINGS_PREFERENCES: {
 			editor_settings_dialog->popup_edit_settings();
 		} break;
+		case SETTINGS_IMGUI_EDITOR:{
+			editor_imgui_window->popup();
+		} break;
 		case SETTINGS_EDITOR_DATA_FOLDER: {
 			OS::get_singleton()->shell_open(String("file://") + EditorPaths::get_singleton()->get_data_dir());
 		} break;
@@ -6124,6 +6127,9 @@ EditorNode::EditorNode() {
 		textfile_extensions.insert(E);
 	}
 
+	editor_imgui_window = memnew(ImGuiWindow);
+	add_child(editor_imgui_window);
+
 	theme_base = memnew(Control);
 	add_child(theme_base);
 	theme_base->set_anchors_and_offsets_preset(Control::PRESET_WIDE);
@@ -6131,12 +6137,6 @@ EditorNode::EditorNode() {
 	gui_base = memnew(Panel);
 	theme_base->add_child(gui_base);
 	gui_base->set_anchors_and_offsets_preset(Control::PRESET_WIDE);
-	
-	// gui_base->add_child(memnew(ImGuiControl));
-
-	ImGuiWindow * iw= memnew(ImGuiWindow);
-	add_child(iw);
-	iw->popup_centered(Size2i(800,600));
 
 	theme_base->set_theme(theme);
 	gui_base->set_theme(theme);
@@ -6578,6 +6578,7 @@ EditorNode::EditorNode() {
 	ED_SHORTCUT_OVERRIDE("editor/editor_settings", "macos", KeyModifierMask::CMD + Key::COMMA);
 	p->add_shortcut(ED_GET_SHORTCUT("editor/editor_settings"), SETTINGS_PREFERENCES);
 	p->add_shortcut(ED_SHORTCUT("editor/command_palette", TTR("Command Palette..."), KeyModifierMask::CMD | KeyModifierMask::SHIFT | Key::P), HELP_COMMAND_PALETTE);
+	p->add_shortcut(ED_SHORTCUT("editor/imgui_editor", TTR("ImGui Editor..."),KeyModifierMask::ALT | KeyModifierMask::SHIFT | Key::E), SETTINGS_IMGUI_EDITOR);
 	p->add_separator();
 
 	editor_layouts = memnew(PopupMenu);
