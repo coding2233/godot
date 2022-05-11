@@ -45,7 +45,7 @@ class ImGuiControl : public Control
     void Render();
     void Draw();
 
-
+    void _draw();
 
 protected:
     // virtual void input(const Ref<InputEvent> &p_event) override;

@@ -44,7 +44,7 @@ ImGuiControl::ImGuiControl()
 	 
 		imgtex.create_from_image(img.duplicate());
 
-		io.Fonts->TexID = ImTextureID();
+		io.Fonts->TexID = ImTextureID(&imgtex);
 
 		io.Fonts->ClearTexData();
 
@@ -74,16 +74,19 @@ ImGuiControl::ImGuiControl()
 		io.KeyMap[(int)ImGuiKey_X] = FixKey(Key::X);
 		io.KeyMap[(int)ImGuiKey_Y] = FixKey(Key::Y);
 		io.KeyMap[(int)ImGuiKey_Z] = FixKey(Key::Z);
+	
 
-		RenderingServer::get_singleton()->connect("frame_post_draw",callable_mp(this,&ImGuiControl::NewFrame));
-		RenderingServer::get_singleton()->connect("frame_pre_draw",callable_mp(this,&ImGuiControl::EndFrame));
+		// RenderingServer::get_singleton()->connect("frame_post_draw",callable_mp(this,&ImGuiControl::NewFrame));
+		// RenderingServer::get_singleton()->connect("frame_pre_draw",callable_mp(this,&ImGuiControl::EndFrame));
 
-		NewFrame();
+		
 		limit = 1024;
 
 		strings.push_back(memnew_arr(char, limit));
 		pos_strings.push_back(0);
 		curr_pos = 0;
+
+		// NewFrame();
 	}
 
     set_process_input(true);
@@ -95,11 +98,21 @@ ImGuiControl::ImGuiControl()
 	// set_position(Vector2(0, 0));
 	// set_size(Vector2(control_window_size.x,control_window_size.y));
 	set_focus_mode(FOCUS_ALL);
+
+	connect("draw",callable_mp(this,&ImGuiControl::_draw));
+
 }
 
 ImGuiControl::~ImGuiControl()
 {}
 
+
+void ImGuiControl::_draw()
+{
+	print_line("ddddddddddddraw");
+	NewFrame();
+	EndFrame();
+}
 
 void ImGuiControl::_window_input(const Ref<InputEvent> &p_event) 
 {
