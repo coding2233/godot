@@ -27,26 +27,27 @@ ImGuiControl::ImGuiControl()
 		io.Fonts->AddFontDefault();
 		io.MouseDrawCursor = false;
 		this->rendering_server = RenderingServer::get_singleton();
-		int width, height, bytesPerPixel;
-		unsigned char *pixels = NULL;
-		io.Fonts->GetTexDataAsRGBA32(&pixels, &width, &height, &bytesPerPixel);
+		// int width, height, bytesPerPixel;
+		// unsigned char *pixels = NULL;
+		// io.Fonts->GetTexDataAsRGBA32(&pixels, &width, &height, &bytesPerPixel);
 
-		Vector<uint8_t> textureDataRaw;
+		// Vector<uint8_t> textureDataRaw;
 
-		for (uint32_t i = 0; i < width * height * bytesPerPixel; i++) {
-			textureDataRaw.push_back(pixels[i]);
-		}
+		// for (uint32_t i = 0; i < width * height * bytesPerPixel; i++) {
+		// 	textureDataRaw.push_back(pixels[i]);
+		// }
 
 	
-		Image img(width, height, false, Image::Format::FORMAT_RGBA8, textureDataRaw);
+		// Image img(width, height, false, Image::Format::FORMAT_RGBA8, textureDataRaw);
 
-		texture_count = 0; 
+		// texture_count = 0; 
 	 
-		imgtex.create_from_image(img.duplicate());
+		// imgtex.create_from_image(img.duplicate());
 
-		io.Fonts->TexID = ImTextureID(&imgtex);
+		// io.Fonts->TexID = ImTextureID(texture_count++);
 
-		io.Fonts->ClearTexData();
+		// io.Fonts->ClearTexData();
+
 
 		Vector2i window_size = DisplayServer::get_singleton()->window_get_size();
 		io.DisplaySize.x = window_size.x;
@@ -86,7 +87,7 @@ ImGuiControl::ImGuiControl()
 		pos_strings.push_back(0);
 		curr_pos = 0;
 
-		// NewFrame();
+		NewFrame();
 	}
 
     set_process_input(true);
@@ -104,14 +105,52 @@ ImGuiControl::ImGuiControl()
 }
 
 ImGuiControl::~ImGuiControl()
-{}
+{
+	for (int i = 0; i < mesh_dict.size(); i++)
+		for (int j = 0; j < mesh_dict[i].size(); j++) {
+			Vector<ArrayMesh *> &dict = const_cast<Vector<ArrayMesh *> &>(mesh_dict[i]);
+			memdelete(dict[j]);
+		}
+
+
+	for (uint32_t i = 0; i < strings.size(); i++)
+		memdelete_arr(strings[i]);
+	strings.clear();
+}
+
+    void ImGuiControl::GetImageTexture()
+	{
+		ImGuiIO &io = ImGui::GetIO();
+
+				io.Fonts->AddFontDefault();
+		io.MouseDrawCursor = false;
+		int width, height, bytesPerPixel;
+		unsigned char *pixels = NULL;
+		io.Fonts->GetTexDataAsRGBA32(&pixels, &width, &height, &bytesPerPixel);
+
+		Vector<uint8_t> textureDataRaw;
+
+		for (uint32_t i = 0; i < width * height * bytesPerPixel; i++) {
+			textureDataRaw.push_back(pixels[i]);
+		}
+
+	
+		Image img(width, height, false, Image::Format::FORMAT_RGBA8, textureDataRaw);
+
+	
+		imgtex.create_from_image(img.duplicate());
+
+		io.Fonts->TexID = ImTextureID(texture_count++);
+
+		io.Fonts->ClearTexData();
+	}
 
 
 void ImGuiControl::_draw()
 {
-	print_line("ddddddddddddraw");
-	NewFrame();
-	EndFrame();
+	// print_line("ddddddddddddraw");
+	// NewFrame();
+	// EndFrame();
 }
 
 void ImGuiControl::_window_input(const Ref<InputEvent> &p_event) 
@@ -176,6 +215,8 @@ void ImGuiControl::_window_input(const Ref<InputEvent> &p_event)
 
 void ImGuiControl::NewFrame() 
 {
+	GetImageTexture();
+
 	print_line("ImGuiControl::NewFrame() ");
 	Size2 ics = get_size();
 	if(imgui_control_size!=ics)

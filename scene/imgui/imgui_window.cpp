@@ -13,12 +13,14 @@ ImGuiWindow::ImGuiWindow(/* args */)
 	// set_clamp_to_embedder(true);
     imgui_control=memnew(ImGuiControl);
     add_child(imgui_control);
-    add_child(memnew(Button));
+    Button *btn = memnew(Button);
+    btn->set_text("Buttonnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
+    add_child(btn);
 
 	connect("window_input", callable_mp(this, &ImGuiWindow::_input_from_window));
 
-    // RenderingServer::get_singleton()->connect("frame_post_draw",callable_mp(this,&ImGuiWindow::_frame_post_draw));
-	// RenderingServer::get_singleton()->connect("frame_pre_draw",callable_mp(this,&ImGuiWindow::_frame_pre_draw));
+    RenderingServer::get_singleton()->connect("frame_post_draw",callable_mp(this,&ImGuiWindow::_frame_post_draw));
+	RenderingServer::get_singleton()->connect("frame_pre_draw",callable_mp(this,&ImGuiWindow::_frame_pre_draw));
 }
 		
 
