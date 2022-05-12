@@ -2878,7 +2878,7 @@ void EditorNode::_menu_option_confirm(int p_option, bool p_confirmed) {
 			editor_settings_dialog->popup_edit_settings();
 		} break;
 		case SETTINGS_IMGUI_EDITOR:{
-			editor_imgui_window->popup();
+			editor_imgui_window->popup_imgui_editor();
 		} break;
 		case SETTINGS_EDITOR_DATA_FOLDER: {
 			OS::get_singleton()->shell_open(String("file://") + EditorPaths::get_singleton()->get_data_dir());

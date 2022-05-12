@@ -6,6 +6,8 @@ ImGuiWindow::ImGuiWindow(/* args */)
 	set_title(TTR("ImGui Editor"));
     set_mode(MODE_FULLSCREEN);
 
+    config_path = EditorPaths::get_singleton()->get_config_dir().plus_file("editor_imgui.cfg");
+
     // set_wrap_controls(true);
 	set_visible(false);
 	// set_transient(true);
@@ -14,7 +16,6 @@ ImGuiWindow::ImGuiWindow(/* args */)
     imgui_control=memnew(ImGuiControl);
     add_child(imgui_control);
     // Button *btn = memnew(Button);
-    // btn->set_text("Buttonnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
     // add_child(btn);
 
 	connect("window_input", callable_mp(this, &ImGuiWindow::_input_from_window));
@@ -56,18 +57,53 @@ void ImGuiWindow::_notification(int p_what)
 {
     switch (p_what)
     {
-    case NOTIFICATION_WM_SIZE_CHANGED: {
-			if (is_visible()) {
-				// _update_child_rects();
-			}
-		} break;
+    	case NOTIFICATION_WM_SIZE_CHANGED: 
+		{
+				if (is_visible()) 
+				{
+					// _update_child_rects();
+					set_metadata("editor_imgui","window_size",Rect2i(get_position(),get_size()));
+				}
+		} 
+		break;
 
-		case NOTIFICATION_WM_CLOSE_REQUEST: {
-			// _cancel_pressed();
-	        call_deferred(SNAME("hide"));
-		} break;
+		case NOTIFICATION_WM_CLOSE_REQUEST: 
+		{
+			call_deferred(SNAME("hide"));
+		} 
+		break;
     
     default:
         break;
     }
+}
+
+void ImGuiWindow::popup_imgui_editor()
+{
+	Rect2 saved_size = get_metadata("editor_imgui", "window_size", Rect2(300,200,900,600));
+	popup(saved_size);
+}
+
+
+// Metadata
+
+void ImGuiWindow::set_metadata(const String &p_section, const String &p_key, Variant p_data) 
+{
+	Ref<ConfigFile> cf = memnew(ConfigFile);
+	Error err;
+	err = cf->load(config_path);
+	ERR_FAIL_COND_MSG(err != OK && err != ERR_FILE_NOT_FOUND, "Cannot load editor settings from file '" + config_path + "'.");
+	cf->set_value(p_section, p_key, p_data);
+	err = cf->save(config_path);
+	ERR_FAIL_COND_MSG(err != OK, "Cannot save editor settings to file '" + config_path + "'.");
+}
+
+Variant ImGuiWindow::get_metadata(const String &p_section, const String &p_key, Variant p_default) const 
+{
+	Ref<ConfigFile> cf = memnew(ConfigFile);
+	Error err = cf->load(config_path);
+	if (err != OK) {
+		return p_default;
+	}
+	return cf->get_value(p_section, p_key, p_default);
 }
