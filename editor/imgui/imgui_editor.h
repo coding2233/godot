@@ -11,6 +11,9 @@ class ImGuiEditor:public ImGuiControl
 private:
     SubViewportContainer* viewport_container;
     SubViewport* viewport;
+    
+    bool show_game_view;
+
     /* data */
     void AppMainMenuBar();
 

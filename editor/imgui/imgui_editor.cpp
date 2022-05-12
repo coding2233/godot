@@ -2,6 +2,8 @@
 
 ImGuiEditor::ImGuiEditor(/* args */)
 {
+    show_game_view = true;
+
 	viewport_container = memnew(SubViewportContainer);
 	viewport_container->set_stretch(true);
 	add_child(viewport_container);
@@ -55,10 +57,9 @@ void ImGuiEditor::OnDraw()
         ImGui::Button("xxxxxxx");
         ImGui::End();
 
-        ImGui::Begin("test003");
-        ImGui::Button("xxxxxxx");
-        Point2 vcp=Point2(ImGui::GetWindowPos().x+10,ImGui::GetWindowPos().y+10);
-        Size2 vcs = Size2(ImGui::GetWindowSize().x,ImGui::GetWindowSize().y);
+        ImGui::Begin("Game",&show_game_view);
+        Point2 vcp=Point2(ImGui::GetWindowPos().x,ImGui::GetWindowPos().y+ImGui::GetFrameHeight());
+        Size2 vcs = Size2(ImGui::GetWindowSize().x-5,ImGui::GetWindowSize().y-ImGui::GetFrameHeight());
         ImGui::End();
         viewport_container->set_position(vcp); 
         viewport_container->set_size(vcs); 
@@ -72,6 +73,7 @@ void ImGuiEditor::OnDraw()
     AppMainMenuBar();
     ImGui::End();
 }
+
 
 
 void ImGuiEditor::AppMainMenuBar()
@@ -95,6 +97,13 @@ void ImGuiEditor::AppMainMenuBar()
 
             // if (ImGui::MenuItem("Close", NULL, false, p_open != NULL))
             //     *p_open = false;
+            ImGui::EndMenu();
+        }
+
+         if (ImGui::BeginMenu("Window"))
+        {
+            // ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen);
+            ImGui::MenuItem("Game", NULL, &show_game_view);
             ImGui::EndMenu();
         }
         // HelpMarker(
