@@ -9,9 +9,9 @@
 #include "imgui_editor.h"
 
 
-class ImGuiWindow:public Window
+class ImGuiEditorWindow:public Window
 {
-	GDCLASS(ImGuiWindow, Window);
+	GDCLASS(ImGuiEditorWindow, Window);
 private:
     String config_path;
     ImGuiEditor* imgui_editor;
@@ -26,8 +26,8 @@ protected:
 	void _notification(int p_what);
 
 public:
-    ImGuiWindow(/* args */);
-    ~ImGuiWindow();
+    ImGuiEditorWindow(/* args */);
+    ~ImGuiEditorWindow();
 
     void _frame_post_draw();
     void _frame_pre_draw();

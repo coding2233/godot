@@ -1,7 +1,7 @@
-#include "imgui_window.h"
+#include "imgui_editor_window.h"
 #include "scene/gui/button.h"
 
-ImGuiWindow::ImGuiWindow(/* args */)
+ImGuiEditorWindow::ImGuiEditorWindow(/* args */)
 {
 	set_title(TTR("ImGui Editor"));
     set_mode(MODE_FULLSCREEN);
@@ -18,18 +18,18 @@ ImGuiWindow::ImGuiWindow(/* args */)
     // Button *btn = memnew(Button);
     // add_child(btn);
 
-	connect("window_input", callable_mp(this, &ImGuiWindow::_input_from_window));
+	connect("window_input", callable_mp(this, &ImGuiEditorWindow::_input_from_window));
 
-    RenderingServer::get_singleton()->connect("frame_post_draw",callable_mp(this,&ImGuiWindow::_frame_post_draw));
-	RenderingServer::get_singleton()->connect("frame_pre_draw",callable_mp(this,&ImGuiWindow::_frame_pre_draw));
+    RenderingServer::get_singleton()->connect("frame_post_draw",callable_mp(this,&ImGuiEditorWindow::_frame_post_draw));
+	RenderingServer::get_singleton()->connect("frame_pre_draw",callable_mp(this,&ImGuiEditorWindow::_frame_pre_draw));
 }
 		
 
-ImGuiWindow::~ImGuiWindow()
+ImGuiEditorWindow::~ImGuiEditorWindow()
 {
 }
 
-void ImGuiWindow::_input_from_window(const Ref<InputEvent> &p_event)
+void ImGuiEditorWindow::_input_from_window(const Ref<InputEvent> &p_event)
 {
     if (is_visible())
     {
@@ -37,7 +37,7 @@ void ImGuiWindow::_input_from_window(const Ref<InputEvent> &p_event)
     }
 }
 
-void ImGuiWindow::_frame_post_draw()
+void ImGuiEditorWindow::_frame_post_draw()
 {
     if (is_visible())
     {
@@ -45,7 +45,7 @@ void ImGuiWindow::_frame_post_draw()
     }
 }
 
-void ImGuiWindow::_frame_pre_draw()
+void ImGuiEditorWindow::_frame_pre_draw()
 {
      if (is_visible())
     {
@@ -53,7 +53,7 @@ void ImGuiWindow::_frame_pre_draw()
     }
 }
 
-void ImGuiWindow::_notification(int p_what)
+void ImGuiEditorWindow::_notification(int p_what)
 {
     switch (p_what)
     {
@@ -78,7 +78,7 @@ void ImGuiWindow::_notification(int p_what)
     }
 }
 
-void ImGuiWindow::popup_imgui_editor()
+void ImGuiEditorWindow::popup_imgui_editor()
 {
 	Rect2 saved_size = get_metadata("editor_imgui", "window_size", Rect2(300,200,900,600));
 	popup(saved_size);
@@ -87,7 +87,7 @@ void ImGuiWindow::popup_imgui_editor()
 
 // Metadata
 
-void ImGuiWindow::set_metadata(const String &p_section, const String &p_key, Variant p_data) 
+void ImGuiEditorWindow::set_metadata(const String &p_section, const String &p_key, Variant p_data) 
 {
 	Ref<ConfigFile> cf = memnew(ConfigFile);
 	Error err;
@@ -98,7 +98,7 @@ void ImGuiWindow::set_metadata(const String &p_section, const String &p_key, Var
 	ERR_FAIL_COND_MSG(err != OK, "Cannot save editor settings to file '" + config_path + "'.");
 }
 
-Variant ImGuiWindow::get_metadata(const String &p_section, const String &p_key, Variant p_default) const 
+Variant ImGuiEditorWindow::get_metadata(const String &p_section, const String &p_key, Variant p_default) const 
 {
 	Ref<ConfigFile> cf = memnew(ConfigFile);
 	Error err = cf->load(config_path);

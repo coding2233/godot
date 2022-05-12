@@ -205,7 +205,7 @@
 #include "editor/scene_tree_dock.h"
 
 #include "scene/imgui/imgui_control.h"
-#include "editor/imgui/imgui_window.h"
+#include "editor/imgui/imgui_editor_window.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -6141,7 +6141,7 @@ EditorNode::EditorNode() {
 	gui_base->set_theme(theme);
 	gui_base->add_theme_style_override("panel", gui_base->get_theme_stylebox(SNAME("Background"), SNAME("EditorStyles")));
 
-	editor_imgui_window = memnew(ImGuiWindow);
+	editor_imgui_window = memnew(ImGuiEditorWindow);
 	theme_base->add_child(editor_imgui_window);
 
 	resource_preview = memnew(EditorResourcePreview);

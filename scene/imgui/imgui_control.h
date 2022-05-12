@@ -2,6 +2,7 @@
 #define IMGUI_CONTROL_H
 
 #include "imgui.h"
+#include "imgui_internal.h"
 
 #include "servers/rendering_server.h"
 #include "core/os/keyboard.h"

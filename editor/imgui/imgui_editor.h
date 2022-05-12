@@ -7,6 +7,7 @@ class ImGuiEditor:public ImGuiControl
 {
 private:
     /* data */
+    void AppMainMenuBar();
 public:
     ImGuiEditor(/* args */);
     ~ImGuiEditor();
