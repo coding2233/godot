@@ -13,8 +13,8 @@ ImGuiWindow::ImGuiWindow(/* args */)
 	// set_transient(true);
 	// set_exclusive(true);
 	// set_clamp_to_embedder(true);
-    imgui_control=memnew(ImGuiControl);
-    add_child(imgui_control);
+    imgui_editor=memnew(ImGuiEditor);
+    add_child(imgui_editor);
     // Button *btn = memnew(Button);
     // add_child(btn);
 
@@ -33,7 +33,7 @@ void ImGuiWindow::_input_from_window(const Ref<InputEvent> &p_event)
 {
     if (is_visible())
     {
-       imgui_control->_window_input(p_event);
+       imgui_editor->_window_input(p_event);
     }
 }
 
@@ -41,7 +41,7 @@ void ImGuiWindow::_frame_post_draw()
 {
     if (is_visible())
     {
-        imgui_control->NewFrame();
+        imgui_editor->NewFrame();
     }
 }
 
@@ -49,7 +49,7 @@ void ImGuiWindow::_frame_pre_draw()
 {
      if (is_visible())
     {
-        imgui_control->EndFrame();
+        imgui_editor->EndFrame();
     }
 }
 

@@ -5,7 +5,8 @@
 #include "core/io/config_file.h"
 #include "editor/editor_paths.h"
 
-#include "imgui_control.h"
+#include "scene/imgui/imgui_control.h"
+#include "imgui_editor.h"
 
 
 class ImGuiWindow:public Window
@@ -13,7 +14,7 @@ class ImGuiWindow:public Window
 	GDCLASS(ImGuiWindow, Window);
 private:
     String config_path;
-    ImGuiControl* imgui_control;
+    ImGuiEditor* imgui_editor;
 
     /* data */
 	void _input_from_window(const Ref<InputEvent> &p_event);

@@ -205,7 +205,7 @@
 #include "editor/scene_tree_dock.h"
 
 #include "scene/imgui/imgui_control.h"
-#include "scene/imgui/imgui_window.h"
+#include "editor/imgui/imgui_window.h"
 
 #include <stdio.h>
 #include <stdlib.h>

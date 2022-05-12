@@ -45,12 +45,11 @@ class ImGuiControl : public Control
     void Render();
     void Draw();
 
-    void _draw();
-
     void GetImageTexture();
 
 protected:
     // virtual void input(const Ref<InputEvent> &p_event) override;
+    virtual void OnDraw();
 public:
     ImGuiControl();
 	~ImGuiControl();
