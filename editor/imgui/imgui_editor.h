@@ -1,13 +1,19 @@
 #ifndef IMGUI_EDITOR_H
 #define IMGUI_EDITOR_H
 
+#include "scene/gui/subviewport_container.h"
 #include "scene/imgui/imgui_control.h"
+#include "scene/3d/camera_3d.h"
+#include "editor/scene_tree_dock.h"
 
 class ImGuiEditor:public ImGuiControl
 {
 private:
+    SubViewportContainer* viewport_container;
+    SubViewport* viewport;
     /* data */
     void AppMainMenuBar();
+
 public:
     ImGuiEditor(/* args */);
     ~ImGuiEditor();

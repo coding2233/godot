@@ -2,6 +2,15 @@
 
 ImGuiEditor::ImGuiEditor(/* args */)
 {
+	viewport_container = memnew(SubViewportContainer);
+	viewport_container->set_stretch(true);
+	add_child(viewport_container);
+	// c->set_anchors_and_offsets_preset(Control::PRESET_WIDE);
+    viewport = memnew(SubViewport);
+	viewport->set_disable_input(true);
+
+	viewport_container->add_child(viewport);
+    viewport_container->set_as_top_level(true);
 }
 
 ImGuiEditor::~ImGuiEditor()
@@ -11,6 +20,17 @@ ImGuiEditor::~ImGuiEditor()
 
 void ImGuiEditor::OnDraw()
 {
+    Node *scene_root = SceneTreeDock::get_singleton()->get_editor_data()->get_edited_scene_root();
+    if(scene_root)
+    {
+        Camera3D *cam = scene_root->get_viewport()->get_camera_3d();
+        if (cam)
+        {
+            RS::get_singleton()->viewport_attach_camera(viewport->get_viewport_rid(), cam->get_camera());
+        }
+    }
+    
+
     // Main window
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
     const ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -24,22 +44,24 @@ void ImGuiEditor::OnDraw()
     if (ImGui::Begin("ImGui Docking root window", &rootWindowOpen, window_flags))
     {
         ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
-        ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
+        ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_PassthruCentralNode);
         // bool showDemo = true;
         // ImGui::ShowDemoWindow(&showDemo);
-        static bool test001Open=true;
-        ImGui::Begin("test001",&test001Open);
+        ImGui::Begin("test001");
         ImGui::Button("xxxxxxx");
         ImGui::End();
 
-        static bool test002Open=true;
-        ImGui::Begin("test002",&test002Open);
+        ImGui::Begin("test002");
         ImGui::Button("xxxxxxx");
         ImGui::End();
 
         ImGui::Begin("test003");
         ImGui::Button("xxxxxxx");
+        Point2 vcp=Point2(ImGui::GetWindowPos().x+10,ImGui::GetWindowPos().y+10);
+        Size2 vcs = Size2(ImGui::GetWindowSize().x,ImGui::GetWindowSize().y);
         ImGui::End();
+        viewport_container->set_position(vcp); 
+        viewport_container->set_size(vcs); 
 
         ImGui::Begin("test004");
         ImGui::Button("xxxxxxx");

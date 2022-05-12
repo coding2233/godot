@@ -90,15 +90,15 @@ ImGuiControl::ImGuiControl()
 		NewFrame();
 	}
 
-    set_process_input(true);
-	set_process(true);
+    // set_process_input(true);
+	// set_process(true);
 	set_anchors_and_offsets_preset(PRESET_WIDE,PRESET_MODE_KEEP_SIZE,0);
-    set_as_top_level(true);
+    // set_as_top_level(true);
     set_position(Vector2(0, 0));	
     // Vector2i control_window_size = DisplayServer::get_singleton()->window_get_size();
 	// set_position(Vector2(0, 0));
 	// set_size(Vector2(control_window_size.x,control_window_size.y));
-	set_focus_mode(FOCUS_ALL);
+	// set_focus_mode(FOCUS_ALL);
 
 
 }
