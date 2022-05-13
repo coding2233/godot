@@ -1328,35 +1328,6 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 	// always convert to lower case for consistency in the code
 	rendering_driver = rendering_driver.to_lower();
 
-	GLOBAL_DEF_BASIC("display/window/size/viewport_width", 1024);
-	ProjectSettings::get_singleton()->set_custom_property_info("display/window/size/viewport_width",
-			PropertyInfo(Variant::INT, "display/window/size/viewport_width",
-					PROPERTY_HINT_RANGE,
-					"0,7680,1,or_greater")); // 8K resolution
-
-	GLOBAL_DEF_BASIC("display/window/size/viewport_height", 600);
-	ProjectSettings::get_singleton()->set_custom_property_info("display/window/size/viewport_height",
-			PropertyInfo(Variant::INT, "display/window/size/viewport_height",
-					PROPERTY_HINT_RANGE,
-					"0,4320,1,or_greater")); // 8K resolution
-
-	GLOBAL_DEF_BASIC("display/window/size/resizable", true);
-	GLOBAL_DEF_BASIC("display/window/size/borderless", false);
-	GLOBAL_DEF_BASIC("display/window/size/fullscreen", false);
-	GLOBAL_DEF("display/window/size/always_on_top", false);
-	GLOBAL_DEF("display/window/size/window_width_override", 0);
-	ProjectSettings::get_singleton()->set_custom_property_info("display/window/size/window_width_override",
-			PropertyInfo(Variant::INT,
-					"display/window/size/window_width_override",
-					PROPERTY_HINT_RANGE,
-					"0,7680,1,or_greater")); // 8K resolution
-	GLOBAL_DEF("display/window/size/window_height_override", 0);
-	ProjectSettings::get_singleton()->set_custom_property_info("display/window/size/window_height_override",
-			PropertyInfo(Variant::INT,
-					"display/window/size/window_height_override",
-					PROPERTY_HINT_RANGE,
-					"0,4320,1,or_greater")); // 8K resolution
-
 	if (use_custom_res) {
 		if (!force_res) {
 			window_size.width = GLOBAL_GET("display/window/size/viewport_width");
@@ -2331,11 +2302,11 @@ bool Main::start() {
 		if (!project_manager && !editor) { // game
 			if (!game_path.is_empty() || !script.is_empty()) {
 				//autoload
-				OrderedHashMap<StringName, ProjectSettings::AutoloadInfo> autoloads = ProjectSettings::get_singleton()->get_autoload_list();
+				HashMap<StringName, ProjectSettings::AutoloadInfo> autoloads = ProjectSettings::get_singleton()->get_autoload_list();
 
 				//first pass, add the constants so they exist before any script is loaded
-				for (OrderedHashMap<StringName, ProjectSettings::AutoloadInfo>::Element E = autoloads.front(); E; E = E.next()) {
-					const ProjectSettings::AutoloadInfo &info = E.get();
+				for (const KeyValue<StringName, ProjectSettings::AutoloadInfo> &E : autoloads) {
+					const ProjectSettings::AutoloadInfo &info = E.value;
 
 					if (info.is_singleton) {
 						for (int i = 0; i < ScriptServer::get_language_count(); i++) {
@@ -2346,8 +2317,8 @@ bool Main::start() {
 
 				//second pass, load into global constants
 				List<Node *> to_add;
-				for (OrderedHashMap<StringName, ProjectSettings::AutoloadInfo>::Element E = autoloads.front(); E; E = E.next()) {
-					const ProjectSettings::AutoloadInfo &info = E.get();
+				for (const KeyValue<StringName, ProjectSettings::AutoloadInfo> &E : autoloads) {
+					const ProjectSettings::AutoloadInfo &info = E.value;
 
 					Ref<Resource> res = ResourceLoader::load(info.path);
 					ERR_CONTINUE_MSG(res.is_null(), "Can't autoload: " + info.path);
