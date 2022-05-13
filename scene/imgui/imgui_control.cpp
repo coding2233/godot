@@ -280,11 +280,11 @@ void ImGuiControl::Draw()
 	}
 
 	drawData->ScaleClipRects(ImGui::GetIO().DisplayFramebufferScale);
-
+	
 	for (uint32_t i = child_dict.size(); i < drawData->CmdListsCount; i++)
     { 
-		 child_dict.push_back(Vector<RID>());
-		 mesh_dict.push_back(Vector<ArrayMesh *>());
+		child_dict.push_back(Vector<RID>());
+		mesh_dict.push_back(Vector<ArrayMesh *>());
 
 		 RID item_parent = rendering_server->canvas_item_create();
 		 rendering_server->canvas_item_set_parent(item_parent, get_canvas_item());
@@ -303,7 +303,7 @@ void ImGuiControl::Draw()
 		Vector<int> indices;
 
 		ImDrawList *cmdList = drawData->CmdLists[i];
-
+		// cmdList->_TextureIdStack.size()>0
 		for (uint32_t j = 0; j < cmdList->VtxBuffer.size(); j++) 
         {
 			// vertex pos
@@ -345,6 +345,7 @@ void ImGuiControl::Draw()
 			cmdList->CmdBuffer[j].ClipRect.y,
 			cmdList->CmdBuffer[j].ClipRect.z - cmdList->CmdBuffer[j].ClipRect.x,
 			cmdList->CmdBuffer[j].ClipRect.w - cmdList->CmdBuffer[j].ClipRect.y);
+			Texture* texture_rid = cmdList->CmdBuffer[j].GetTexID();
 
 			rendering_server->canvas_item_clear(child_dict[i][j]);
 			rendering_server->canvas_item_set_custom_rect(child_dict[i][j], true, clippingRect);
@@ -354,6 +355,7 @@ void ImGuiControl::Draw()
             {
 				indices.push_back(cmdList->IdxBuffer[k]);
 			}
+
 
 			Array renderData;
 			renderData.resize(ArrayMesh::ARRAY_MAX);
@@ -366,9 +368,10 @@ void ImGuiControl::Draw()
 			mesh_dict[i][j]->add_surface_from_arrays(Mesh::PrimitiveType::PRIMITIVE_TRIANGLES, renderData);
 			//meshes[index]->add_surface_from_arrays(Mesh::PrimitiveType::PRIMITIVE_TRIANGLES, renderData);
 		
-			rendering_server->canvas_item_add_mesh(child_dict[i][j], mesh_dict[i][j]->get_rid(), Transform2D(), Color(1,1,1,1), imgtex.get_rid());
+			rendering_server->canvas_item_add_mesh(child_dict[i][j], mesh_dict[i][j]->get_rid(), Transform2D(), Color(1,1,1,1),texture_rid->get_rid());
 			indices.clear();
 		}
+
 	}
 
 }
@@ -405,7 +408,7 @@ void ImGuiControl::GetImageTexture()
 	
 		imgtex.create_from_image(img.duplicate());
 
-		io.Fonts->TexID = ImTextureID(&imgtex);
-		io.Fonts->ClearTexData();
+		io.Fonts->SetTexID(&imgtex);
+		// io.Fonts->ClearTexData();
 	}
 }

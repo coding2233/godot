@@ -4,15 +4,10 @@ ImGuiEditor::ImGuiEditor(/* args */)
 {
     show_game_view = true;
 
-	viewport_container = memnew(SubViewportContainer);
-	viewport_container->set_stretch(true);
-	add_child(viewport_container);
-	// c->set_anchors_and_offsets_preset(Control::PRESET_WIDE);
     viewport = memnew(SubViewport);
 	viewport->set_disable_input(true);
-
-	viewport_container->add_child(viewport);
-    viewport_container->set_as_top_level(true);
+    viewport->set_update_mode(SubViewport::UPDATE_ALWAYS);
+    add_child(viewport);
 }
 
 ImGuiEditor::~ImGuiEditor()
@@ -35,10 +30,10 @@ void ImGuiEditor::OnDraw()
 
     // Main window
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
-    const ImGuiViewport* viewport = ImGui::GetMainViewport();
-    ImGui::SetNextWindowPos(viewport->WorkPos);
-    ImGui::SetNextWindowSize(viewport->WorkSize);
-    ImGui::SetNextWindowViewport(viewport->ID);
+    const ImGuiViewport* main_viewport = ImGui::GetMainViewport();
+    ImGui::SetNextWindowPos(main_viewport->WorkPos);
+    ImGui::SetNextWindowSize(main_viewport->WorkSize);
+    ImGui::SetNextWindowViewport(main_viewport->ID);
     window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
     window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
     window_flags |= ImGuiWindowFlags_NoBackground;
@@ -57,12 +52,22 @@ void ImGuiEditor::OnDraw()
         ImGui::Button("xxxxxxx");
         ImGui::End();
 
-        ImGui::Begin("Game",&show_game_view);
-        Point2 vcp=Point2(ImGui::GetWindowPos().x,ImGui::GetWindowPos().y+ImGui::GetFrameHeight());
-        Size2 vcs = Size2(ImGui::GetWindowSize().x-5,ImGui::GetWindowSize().y-ImGui::GetFrameHeight());
+        if(ImGui::Begin("Game",&show_game_view))
+        {
+            ImVec2 vcp=ImVec2(ImGui::GetWindowPos().x,ImGui::GetWindowPos().y+ImGui::GetFrameHeight());
+            Size2 game_view_size = Size2(ImGui::GetWindowSize().x,ImGui::GetWindowSize().y-ImGui::GetFrameHeight());
+            ImVec2 vcs = ImVec2(game_view_size.x+vcp.x,game_view_size.y+vcp.y);
+            viewport->set_size(game_view_size);
+            ImGui::GetWindowDrawList()->AddImage(viewport->get_texture().ptr(),vcp,vcs);
+            // Point2 vcp=Point2(ImGui::GetWindowPos().x,ImGui::GetWindowPos().y+ImGui::GetFrameHeight());
+            // 
+        }
         ImGui::End();
-        viewport_container->set_position(vcp); 
-        viewport_container->set_size(vcs); 
+
+        // viewport_container->set_position(vcp); 
+        // viewport_container->set_size(vcs); 
+    // viewport_container->set_position(Point2());
+    // viewport_container->set_size(Size2(400,300));
 
         ImGui::Begin("test004");
         ImGui::Button("xxxxxxx");
