@@ -6,7 +6,7 @@ ImGuiEditor::ImGuiEditor(/* args */)
 
     viewport = memnew(SubViewport);
 	viewport->set_disable_input(true);
-    viewport->set_update_mode(SubViewport::UPDATE_ALWAYS);
+    // viewport->set_update_mode(SubViewport::UPDATE_ALWAYS);
     add_child(viewport);
 }
 
@@ -38,40 +38,27 @@ void ImGuiEditor::OnDraw()
     window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
     window_flags |= ImGuiWindowFlags_NoBackground;
     bool rootWindowOpen=true;
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
     if (ImGui::Begin("ImGui Docking root window", &rootWindowOpen, window_flags))
     {
+        ImGui::PopStyleVar();
+
         ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
         ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_PassthruCentralNode);
-        // bool showDemo = true;
-        // ImGui::ShowDemoWindow(&showDemo);
-        ImGui::Begin("test001");
-        ImGui::Button("xxxxxxx");
-        ImGui::End();
 
-        ImGui::Begin("test002");
-        ImGui::Button("xxxxxxx");
-        ImGui::End();
-
-        if(ImGui::Begin("Game",&show_game_view))
+        if (show_game_view)
         {
-            ImVec2 vcp=ImVec2(ImGui::GetWindowPos().x,ImGui::GetWindowPos().y+ImGui::GetFrameHeight());
-            Size2 game_view_size = Size2(ImGui::GetWindowSize().x,ImGui::GetWindowSize().y-ImGui::GetFrameHeight());
-            ImVec2 vcs = ImVec2(game_view_size.x+vcp.x,game_view_size.y+vcp.y);
-            viewport->set_size(game_view_size);
-            ImGui::GetWindowDrawList()->AddImage(viewport->get_texture().ptr(),vcp,vcs);
-            // Point2 vcp=Point2(ImGui::GetWindowPos().x,ImGui::GetWindowPos().y+ImGui::GetFrameHeight());
-            // 
+            if(ImGui::Begin("Game",&show_game_view))
+            {
+                ImVec2 vcp=ImVec2(ImGui::GetWindowPos().x,ImGui::GetWindowPos().y+ImGui::GetFrameHeight());
+                Size2 game_view_size = Size2(ImGui::GetWindowSize().x,ImGui::GetWindowSize().y-ImGui::GetFrameHeight());
+                ImVec2 vcs = ImVec2(game_view_size.x+vcp.x,game_view_size.y+vcp.y);
+                viewport->set_size(game_view_size);
+                ImGui::GetWindowDrawList()->AddImage(viewport->get_texture().ptr(),vcp,vcs);
+            }
+            ImGui::End();
         }
-        ImGui::End();
 
-        // viewport_container->set_position(vcp); 
-        // viewport_container->set_size(vcs); 
-    // viewport_container->set_position(Point2());
-    // viewport_container->set_size(Size2(400,300));
-
-        ImGui::Begin("test004");
-        ImGui::Button("xxxxxxx");
-        ImGui::End();
     }
 
      //Menu bar

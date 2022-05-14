@@ -1,4 +1,6 @@
 #include "imgui_control.h"
+#include "editor/editor_paths.h"
+
 
 int ImGuiControl::mouse_wheel;
 uint32_t ImGuiControl::curr_pos;
@@ -21,6 +23,9 @@ ImGuiControl::ImGuiControl()
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 #ifdef JAVASCRIPT_ENABLED
 		io.IniFilename = NULL; 
+#else
+		io.IniFilename=EditorPaths::get_singleton()->get_config_dir().plus_file("imgui.ini").ascii().get_data();
+		print_line(io.IniFilename);
 #endif
 		// ImGui::SetCurrentContext(context);
 		//ImGui::StyleColorsDark();
@@ -47,6 +52,7 @@ ImGuiControl::ImGuiControl()
 		// io.Fonts->TexID = ImTextureID(texture_count++);
 
 		// io.Fonts->ClearTexData();
+		GetImageTexture();
 
 
 		Vector2i window_size = DisplayServer::get_singleton()->window_get_size();
@@ -88,12 +94,13 @@ ImGuiControl::ImGuiControl()
 		curr_pos = 0;
 
 		NewFrame();
+
 	}
 
     // set_process_input(true);
 	// set_process(true);
 	set_anchors_and_offsets_preset(PRESET_WIDE,PRESET_MODE_KEEP_SIZE,0);
-    // set_as_top_level(true);
+    set_as_top_level(true);
     set_position(Vector2(0, 0));	
     // Vector2i control_window_size = DisplayServer::get_singleton()->window_get_size();
 	// set_position(Vector2(0, 0));
@@ -186,9 +193,9 @@ void ImGuiControl::_window_input(const Ref<InputEvent> &p_event)
 
 void ImGuiControl::NewFrame() 
 {
-	GetImageTexture();
+	
+		GetImageTexture();
 
-	print_line("ImGuiControl::NewFrame() ");
 	Size2 ics = get_size();
 	if(imgui_control_size!=ics)
 	{
@@ -345,7 +352,12 @@ void ImGuiControl::Draw()
 			cmdList->CmdBuffer[j].ClipRect.y,
 			cmdList->CmdBuffer[j].ClipRect.z - cmdList->CmdBuffer[j].ClipRect.x,
 			cmdList->CmdBuffer[j].ClipRect.w - cmdList->CmdBuffer[j].ClipRect.y);
-			Texture* texture_rid = cmdList->CmdBuffer[j].GetTexID();
+			
+			Texture2D* texture_rid = cmdList->CmdBuffer[j].GetTexID();
+			if(texture_rid==nullptr|| texture_rid->get_width()==0||texture_rid->get_height()==0)
+			{
+				texture_rid=&imgtex;
+			}
 
 			rendering_server->canvas_item_clear(child_dict[i][j]);
 			rendering_server->canvas_item_set_custom_rect(child_dict[i][j], true, clippingRect);

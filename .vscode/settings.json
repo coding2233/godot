@@ -45,6 +45,7 @@
         "system_error": "cpp",
         "queue": "cpp",
         "stack": "cpp",
-        "type_traits": "cpp"
+        "type_traits": "cpp",
+        "xlocinfo": "cpp"
     }
 }
