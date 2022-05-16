@@ -115,7 +115,7 @@ will limit its functionality to IPv4 only.
 ## etcpak
 
 - Upstream: https://github.com/wolfpld/etcpak
-- Version: git (10fc4ce627f9a17ed49bf97fcc3796a712033ba1, 2022)
+- Version: git (f128369e64a5f4715de8125b325e4fe7debb5194, 2022)
 - License: BSD-3-Clause
 
 Files extracted from upstream source:
@@ -625,7 +625,7 @@ instead of `miniz.h` as an external dependency.
 ## thorvg
 
 - Upstream: https://github.com/Samsung/thorvg
-- Version: 0.8.0 (41093c17b3cac440bdcc53f8b69abeb5734696b5, 2022)
+- Version: 0.8.1 (c4ccb1078f4390ec749ab8e05ba7e9e35f81285f, 2022)
 - License: MIT
 
 Files extracted from upstream source:
