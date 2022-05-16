@@ -131,7 +131,7 @@ void ImGuiEditor::_notification(int p_what)
         case NOTIFICATION_PROCESS:
             break;
 		case NOTIFICATION_ENTER_TREE:
-		case NOTIFICATION_VISIBILITY_CHANGED: {
+		case NOTIFICATION_VISIBILITY_CHANGED: 
             if (is_visible_in_tree()) 
             {
                 game_viewport->set_update_mode(SubViewport::UPDATE_ALWAYS);
@@ -140,7 +140,7 @@ void ImGuiEditor::_notification(int p_what)
             {
                 game_viewport->set_update_mode(SubViewport::UPDATE_DISABLED);
             }
-            game_viewport->set_handle_input_locally(false);
+            // game_viewport->set_handle_input_locally(false);
         break;
 	}
 }
