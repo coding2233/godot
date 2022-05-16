@@ -13,8 +13,11 @@ ImGuiEditorWindow::ImGuiEditorWindow(/* args */)
 	// set_transient(true);
 	// set_exclusive(true);
 	// set_clamp_to_embedder(true);
+
+	imgui_rendering = memnew(ImGuiRendering);
+	add_child(imgui_rendering);
     imgui_editor=memnew(ImGuiEditor);
-    add_child(imgui_editor);
+    imgui_rendering->add_child(imgui_editor);
     // Button *btn = memnew(Button);
     // add_child(btn);
 
@@ -33,7 +36,7 @@ void ImGuiEditorWindow::_input_from_window(const Ref<InputEvent> &p_event)
 {
     if (is_visible())
     {
-       imgui_editor->_window_input(p_event);
+       imgui_rendering->ReceiveInput(p_event);
     }
 }
 
@@ -41,15 +44,15 @@ void ImGuiEditorWindow::_frame_post_draw()
 {
     if (is_visible())
     {
-        imgui_editor->NewFrame();
+		imgui_rendering->NewFrame();
     }
 }
 
 void ImGuiEditorWindow::_frame_pre_draw()
 {
-     if (is_visible())
+    if (is_visible())
     {
-        imgui_editor->EndFrame();
+        imgui_rendering->EndFrame();
     }
 }
 
@@ -62,7 +65,8 @@ void ImGuiEditorWindow::_notification(int p_what)
 				if (is_visible()) 
 				{
 					// _update_child_rects();
-					set_metadata("editor_imgui","window_size",Rect2i(get_position(),get_size()));
+					Size2i window_size=get_size();
+					set_metadata("editor_imgui","window_size",Rect2i(get_position(),window_size));
 				}
 		} 
 		break;

@@ -15,7 +15,7 @@ ImGuiEditor::~ImGuiEditor()
 }
 
 
-void ImGuiEditor::OnDraw()
+void ImGuiEditor::OnImGui()
 {
     Node *scene_root = SceneTreeDock::get_singleton()->get_editor_data()->get_edited_scene_root();
     if(scene_root)
@@ -46,7 +46,7 @@ void ImGuiEditor::OnDraw()
         ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
         ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_PassthruCentralNode);
 
-        if (show_game_view)
+        // if (show_game_view)
         {
             if(ImGui::Begin("Game",&show_game_view))
             {

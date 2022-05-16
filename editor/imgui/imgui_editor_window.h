@@ -7,6 +7,7 @@
 
 #include "scene/imgui/imgui_control.h"
 #include "imgui_editor.h"
+#include "scene/imgui/imgui_rendering.h"
 
 
 class ImGuiEditorWindow:public Window
@@ -14,6 +15,7 @@ class ImGuiEditorWindow:public Window
 	GDCLASS(ImGuiEditorWindow, Window);
 private:
     String config_path;
+    ImGuiRendering* imgui_rendering;
     ImGuiEditor* imgui_editor;
 
     /* data */

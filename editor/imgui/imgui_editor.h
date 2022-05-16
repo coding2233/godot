@@ -21,8 +21,7 @@ public:
     ImGuiEditor(/* args */);
     ~ImGuiEditor();
 
-protected:
-    void OnDraw() override;
+    void OnImGui() override;
 };
 
 

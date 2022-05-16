@@ -46,6 +46,7 @@
         "queue": "cpp",
         "stack": "cpp",
         "type_traits": "cpp",
-        "xlocinfo": "cpp"
+        "xlocinfo": "cpp",
+        "string": "cpp"
     }
 }

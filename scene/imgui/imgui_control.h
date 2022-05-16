@@ -24,40 +24,12 @@ class ImGuiControl : public Control
 {
 	GDCLASS(ImGuiControl, Control);
 
-    static ImGuiContext *context;
-    ImageTexture imgtex; // This can't be static, and thats fine. as texture count is static, it will behave like it
-	static uint32_t texture_count;
-	static RenderingServer *rendering_server;
-
-    static int mouse_wheel;
-    static uint32_t curr_pos;
-	static uint32_t limit;
-    static char *charbuff;
-    static std::vector<char *> strings;
-	static std::vector<int> pos_strings;
-
-    Vector<Vector<ArrayMesh*>> mesh_dict;
-	Vector<Vector<RID>> child_dict;
-	Vector<RID> child_dict_parent;
-
-    Size2 imgui_control_size;
-
-    unsigned int FixKey(Key kc);
-    void Render();
-    void Draw();
-
-    void GetImageTexture();
-
 protected:
-    // virtual void input(const Ref<InputEvent> &p_event) override;
-    virtual void OnDraw();
+    
 public:
     ImGuiControl();
 	~ImGuiControl();
 
-	void NewFrame();
-    void EndFrame();
-
-    void _window_input(const Ref<InputEvent> &p_event);
+    virtual void OnImGui();
 };
 #endif

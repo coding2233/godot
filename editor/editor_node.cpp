@@ -6140,7 +6140,7 @@ EditorNode::EditorNode() {
 	gui_base->add_theme_style_override("panel", gui_base->get_theme_stylebox(SNAME("Background"), SNAME("EditorStyles")));
 
 	editor_imgui_window = memnew(ImGuiEditorWindow);
-	theme_base->add_child(editor_imgui_window);
+	gui_base->add_child(editor_imgui_window);
 
 	resource_preview = memnew(EditorResourcePreview);
 	add_child(resource_preview);
