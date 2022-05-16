@@ -4,10 +4,11 @@ ImGuiEditor::ImGuiEditor(/* args */)
 {
     show_game_view = true;
 
-    viewport = memnew(SubViewport);
-	viewport->set_disable_input(true);
-    // viewport->set_update_mode(SubViewport::UPDATE_ALWAYS);
-    add_child(viewport);
+    game_viewport = memnew(SubViewport);
+	game_viewport->set_disable_input(true);
+    game_viewport->set_update_mode(SubViewport::UPDATE_ALWAYS);
+   
+    add_child(game_viewport);
 }
 
 ImGuiEditor::~ImGuiEditor()
@@ -17,13 +18,14 @@ ImGuiEditor::~ImGuiEditor()
 
 void ImGuiEditor::OnImGui()
 {
+    //Set attach from show_game_view or other event...
     Node *scene_root = SceneTreeDock::get_singleton()->get_editor_data()->get_edited_scene_root();
     if(scene_root)
     {
         Camera3D *cam = scene_root->get_viewport()->get_camera_3d();
         if (cam)
         {
-            RS::get_singleton()->viewport_attach_camera(viewport->get_viewport_rid(), cam->get_camera());
+            RS::get_singleton()->viewport_attach_camera(game_viewport->get_viewport_rid(), cam->get_camera());
         }
     }
     
@@ -46,15 +48,18 @@ void ImGuiEditor::OnImGui()
         ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
         ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_PassthruCentralNode);
 
-        // if (show_game_view)
+        if (show_game_view)
         {
+            ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
             if(ImGui::Begin("Game",&show_game_view))
             {
+                ImGui::PopStyleVar();
+
                 ImVec2 vcp=ImVec2(ImGui::GetWindowPos().x,ImGui::GetWindowPos().y+ImGui::GetFrameHeight());
                 Size2 game_view_size = Size2(ImGui::GetWindowSize().x,ImGui::GetWindowSize().y-ImGui::GetFrameHeight());
                 ImVec2 vcs = ImVec2(game_view_size.x+vcp.x,game_view_size.y+vcp.y);
-                viewport->set_size(game_view_size);
-                ImGui::GetWindowDrawList()->AddImage(viewport->get_texture().ptr(),vcp,vcs);
+                game_viewport->set_size(game_view_size);
+                ImGui::GetWindowDrawList()->AddImage(game_viewport->get_texture().ptr(),vcp,vcs);
             }
             ImGui::End();
         }

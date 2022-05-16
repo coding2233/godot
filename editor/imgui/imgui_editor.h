@@ -10,7 +10,7 @@ class ImGuiEditor:public ImGuiControl
 {
 private:
     // SubViewportContainer* viewport_container;
-    SubViewport* viewport;
+    SubViewport* game_viewport;
     
     bool show_game_view;
 
