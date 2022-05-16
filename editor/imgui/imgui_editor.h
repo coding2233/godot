@@ -17,6 +17,9 @@ private:
     /* data */
     void AppMainMenuBar();
 
+protected:
+    void _notification(int p_what);
+
 public:
     ImGuiEditor(/* args */);
     ~ImGuiEditor();

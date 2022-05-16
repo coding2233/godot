@@ -7,7 +7,7 @@ ImGuiEditor::ImGuiEditor(/* args */)
     game_viewport = memnew(SubViewport);
 	game_viewport->set_disable_input(true);
     game_viewport->set_update_mode(SubViewport::UPDATE_ALWAYS);
-   
+    
     add_child(game_viewport);
 }
 
@@ -18,16 +18,7 @@ ImGuiEditor::~ImGuiEditor()
 
 void ImGuiEditor::OnImGui()
 {
-    //Set attach from show_game_view or other event...
-    Node *scene_root = SceneTreeDock::get_singleton()->get_editor_data()->get_edited_scene_root();
-    if(scene_root)
-    {
-        Camera3D *cam = scene_root->get_viewport()->get_camera_3d();
-        if (cam)
-        {
-            RS::get_singleton()->viewport_attach_camera(game_viewport->get_viewport_rid(), cam->get_camera());
-        }
-    }
+   
     
 
     // Main window
@@ -51,6 +42,18 @@ void ImGuiEditor::OnImGui()
         if (show_game_view)
         {
             ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+           
+            //Set attach from show_game_view or other event...
+            Node *scene_root = SceneTreeDock::get_singleton()->get_editor_data()->get_edited_scene_root();
+            if(scene_root)
+            {
+                Camera3D *cam = scene_root->get_viewport()->get_camera_3d();
+                if (cam)
+                {
+                    RS::get_singleton()->viewport_attach_camera(game_viewport->get_viewport_rid(), cam->get_camera());
+                }
+            }
+           
             if(ImGui::Begin("Game",&show_game_view))
             {
                 ImGui::PopStyleVar();
@@ -118,3 +121,26 @@ void ImGuiEditor::AppMainMenuBar()
 
 }
 
+
+void ImGuiEditor::_notification(int p_what) 
+{
+	switch (p_what) 
+    {
+		case NOTIFICATION_RESIZED: 
+			break;
+        case NOTIFICATION_PROCESS:
+            break;
+		case NOTIFICATION_ENTER_TREE:
+		case NOTIFICATION_VISIBILITY_CHANGED: {
+            if (is_visible_in_tree()) 
+            {
+                game_viewport->set_update_mode(SubViewport::UPDATE_ALWAYS);
+            } 
+            else 
+            {
+                game_viewport->set_update_mode(SubViewport::UPDATE_DISABLED);
+            }
+            game_viewport->set_handle_input_locally(false);
+        break;
+	}
+}

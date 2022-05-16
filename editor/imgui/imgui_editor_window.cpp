@@ -65,14 +65,15 @@ void ImGuiEditorWindow::_notification(int p_what)
 				if (is_visible()) 
 				{
 					// _update_child_rects();
-					Size2i window_size=get_size();
-					set_metadata("editor_imgui","window_size",Rect2i(get_position(),window_size));
+					// Size2i window_size=get_size();
+					// set_metadata("editor_imgui","window_size",Rect2i(get_position(),window_size));
 				}
 		} 
 		break;
 
 		case NOTIFICATION_WM_CLOSE_REQUEST: 
 		{
+			set_metadata("editor_imgui","window_size",Rect2i(get_position(),get_size()));
 			call_deferred(SNAME("hide"));
 		} 
 		break;
