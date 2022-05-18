@@ -37,12 +37,11 @@ void ImGuiEditor::OnImGui()
 
         ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
         ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_PassthruCentralNode);
-
+        
+        game_viewport->set_update_mode(SubViewport::UPDATE_DISABLED);
         if (show_game_view)
         {
             ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-           
-           
            
             if(ImGui::Begin("Game",&show_game_view))
             {
@@ -50,7 +49,6 @@ void ImGuiEditor::OnImGui()
 
                 //Set attach from show_game_view or other event...
                 Node *scene_root = SceneTreeDock::get_singleton()->get_editor_data()->get_edited_scene_root();
-                game_viewport->set_update_mode(SubViewport::UPDATE_DISABLED);
                 if(scene_root)
                 {
                     Camera3D *cam = scene_root->get_viewport()->get_camera_3d();
