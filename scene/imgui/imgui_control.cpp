@@ -1,5 +1,4 @@
 #include "imgui_control.h"
-#include "editor/editor_paths.h"
 
 ImGuiControl::ImGuiControl()
 {
