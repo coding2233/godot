@@ -21,7 +21,7 @@ ImGuiEditorWindow::ImGuiEditorWindow(/* args */)
     // Button *btn = memnew(Button);
     // add_child(btn);
 
-	connect("window_input", callable_mp(this, &ImGuiEditorWindow::_input_from_window));
+	// connect("window_input", callable_mp(this, &ImGuiEditorWindow::_input_from_window));
 
     RenderingServer::get_singleton()->connect("frame_post_draw",callable_mp(this,&ImGuiEditorWindow::_frame_post_draw));
 	RenderingServer::get_singleton()->connect("frame_pre_draw",callable_mp(this,&ImGuiEditorWindow::_frame_pre_draw));
@@ -32,7 +32,7 @@ ImGuiEditorWindow::~ImGuiEditorWindow()
 {
 }
 
-void ImGuiEditorWindow::_input_from_window(const Ref<InputEvent> &p_event)
+void ImGuiEditorWindow::OnInputFromWindow(const Ref<InputEvent> &p_event)
 {
     if (is_visible())
     {

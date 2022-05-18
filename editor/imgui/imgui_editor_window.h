@@ -1,31 +1,30 @@
-#ifndef IMGUI_WINDOW_H
-#define IMGUI_WINDOW_H
+#ifndef IMGUI_EDITOR_WINDOW_H
+#define IMGUI_EDITOR_WINDOW_H
 
 #include "scene/main/window.h"
 #include "core/io/config_file.h"
 #include "editor/editor_paths.h"
+#include "scene/imgui/imgui_base_window.h"
 
 #include "scene/imgui/imgui_control.h"
 #include "imgui_editor.h"
 #include "scene/imgui/imgui_rendering.h"
 
 
-class ImGuiEditorWindow:public Window
+class ImGuiEditorWindow:public ImGuiBaseWindow
 {
-	GDCLASS(ImGuiEditorWindow, Window);
+	GDCLASS(ImGuiEditorWindow, ImGuiBaseWindow);
 private:
     String config_path;
     ImGuiRendering* imgui_rendering;
     ImGuiEditor* imgui_editor;
-
-    /* data */
-	void _input_from_window(const Ref<InputEvent> &p_event);
 
     void set_metadata(const String &p_section, const String &p_key, Variant p_data);
     Variant get_metadata(const String &p_section, const String &p_key, Variant p_default) const;
 
 protected:
 	void _notification(int p_what);
+    void OnInputFromWindow(const Ref<InputEvent> &p_event) override;
 
 public:
     ImGuiEditorWindow(/* args */);
