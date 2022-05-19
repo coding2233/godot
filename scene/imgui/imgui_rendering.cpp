@@ -36,7 +36,7 @@ ImGuiRendering::ImGuiRendering(/* args */)
     unsigned char *pixels = NULL;
     io.Fonts->GetTexDataAsRGBA32(&pixels, &width, &height, &bytesPerPixel);
     Vector<uint8_t> textureDataRaw;
-    for (uint32_t i = 0; i < width * height * bytesPerPixel; i++) 
+    for (int i = 0; i < width * height * bytesPerPixel; i++) 
     {
         textureDataRaw.push_back(pixels[i]);
     }
@@ -76,13 +76,14 @@ ImGuiRendering::ImGuiRendering(/* args */)
 ImGuiRendering::~ImGuiRendering()
 {
     for (int i = 0; i < mesh_dict.size(); i++)
-    for (int j = 0; j < mesh_dict[i].size(); j++) 
-    {
-        Vector<ArrayMesh *> &dict = const_cast<Vector<ArrayMesh *> &>(mesh_dict[i]);
-        memdelete(dict[j]);
-    }
-
-	for (uint32_t i = 0; i < strings.size(); i++)
+	{
+		for (int j = 0; j < mesh_dict[i].size(); j++) 
+		{
+			Vector<ArrayMesh *> &dict = const_cast<Vector<ArrayMesh *> &>(mesh_dict[i]);
+			memdelete(dict[j]);
+		}
+	}
+	for (int i = 0; i < strings.size(); i++)
 		memdelete_arr(strings[i]);
 	strings.clear();
 }
@@ -123,7 +124,7 @@ void ImGuiRendering::EndFrame()
         it = 0;
 
 	for (auto &it : strings)
-		for (uint32_t i = 0; i < limit; i++)
+		for (int i = 0; i < limit; i++)
 			it[i] = '\0';
     
     new_frame_rendering=false;
@@ -250,9 +251,9 @@ void ImGuiRendering::Draw()
 {
     ImDrawData *drawData = ImGui::GetDrawData();
 	
-	for (uint32_t i = 0; i < mesh_dict.size(); i++) 
+	for (int i = 0; i < mesh_dict.size(); i++) 
     {
-		for (uint32_t j = 0; j < mesh_dict[i].size(); j++) 
+		for (int j = 0; j < mesh_dict[i].size(); j++) 
         {
 			mesh_dict[i][j]->clear_surfaces();
 		}
@@ -260,7 +261,7 @@ void ImGuiRendering::Draw()
 
 	drawData->ScaleClipRects(ImGui::GetIO().DisplayFramebufferScale);
 	
-	for (uint32_t i = child_dict.size(); i < drawData->CmdListsCount; i++)
+	for (int i = child_dict.size(); i < drawData->CmdListsCount; i++)
     { 
 		child_dict.push_back(Vector<RID>());
 		mesh_dict.push_back(Vector<ArrayMesh *>());
@@ -271,7 +272,7 @@ void ImGuiRendering::Draw()
 	}
 
 
-	for (uint32_t i = 0; i < drawData->CmdListsCount; i++) 
+	for (int i = 0; i < drawData->CmdListsCount; i++) 
     {  
 		// Per triangle data
 		Vector<Vector2> vertices;
@@ -283,7 +284,7 @@ void ImGuiRendering::Draw()
 
 		ImDrawList *cmdList = drawData->CmdLists[i];
 		// cmdList->_TextureIdStack.size()>0
-		for (uint32_t j = 0; j < cmdList->VtxBuffer.size(); j++) 
+		for (int j = 0; j < cmdList->VtxBuffer.size(); j++) 
         {
 			// vertex pos
 			ImVec2 imVert = cmdList->VtxBuffer[j].pos;
@@ -303,9 +304,9 @@ void ImGuiRendering::Draw()
 			colors.push_back(godotCol);
 		}
 
-		for (uint32_t j = 0; j < cmdList->CmdBuffer.size(); j++) 
+		for (int j = 0; j < cmdList->CmdBuffer.size(); j++) 
         {
-			for (uint32_t k = child_dict[i].size(); k < cmdList->CmdBuffer.size(); k++) {
+			for (int k = child_dict[i].size(); k < cmdList->CmdBuffer.size(); k++) {
 
 				RID child = rendering_server->canvas_item_create();
 				const_cast<Vector<RID> &>(child_dict[i]).push_back(child);
@@ -331,7 +332,7 @@ void ImGuiRendering::Draw()
 			rendering_server->canvas_item_set_custom_rect(child_dict[i][j], true, clippingRect);
 			rendering_server->canvas_item_set_clip(child_dict[i][j], true);
 	
-			for (int k = cmd->IdxOffset; k < cmd->ElemCount + cmd->IdxOffset; k++) 
+			for (unsigned int k = cmd->IdxOffset; k < cmd->ElemCount + cmd->IdxOffset; k++) 
             {
 				indices.push_back(cmdList->IdxBuffer[k]);
 			}
