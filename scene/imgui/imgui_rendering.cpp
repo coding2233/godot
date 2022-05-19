@@ -25,8 +25,8 @@ ImGuiRendering::ImGuiRendering(/* args */)
 #ifdef JAVASCRIPT_ENABLED
     io.IniFilename = NULL; 
 #else
-    io.IniFilename=EditorPaths::get_singleton()->get_config_dir().plus_file("imgui.ini").ascii().get_data();
-    print_line(io.IniFilename);
+    // io.IniFilename=EditorPaths::get_singleton()->get_config_dir().plus_file("imgui.ini").ascii().get_data();
+    // print_line(io.IniFilename);
 #endif
     io.MouseDrawCursor = false;
     Vector2i window_size = DisplayServer::get_singleton()->window_get_size();

@@ -15,7 +15,6 @@
 #include "core/object/gdvirtual.gen.inc"
 #include "scene/main/viewport.h"
 #include "scene/main/node.h"
-#include "editor/editor_paths.h"
 #include "imgui_control.h"
 
 #include <vector>

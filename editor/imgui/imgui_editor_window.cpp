@@ -16,10 +16,17 @@ ImGuiEditorWindow::ImGuiEditorWindow(/* args */)
 
 	imgui_rendering = memnew(ImGuiRendering);
 	add_child(imgui_rendering);
+#ifndef JAVASCRIPT_ENABLED
+    ImGuiIO &io = ImGui::GetIO();
+    io.IniFilename=EditorPaths::get_singleton()->get_config_dir().plus_file("imgui.ini").ascii().get_data();
+    print_line(io.IniFilename);
+#endif
     imgui_editor=memnew(ImGuiEditor);
     imgui_rendering->add_child(imgui_editor);
     // Button *btn = memnew(Button);
     // add_child(btn);
+
+
 
 	// connect("window_input", callable_mp(this, &ImGuiEditorWindow::_input_from_window));
 
