@@ -83,7 +83,7 @@ ImGuiRendering::~ImGuiRendering()
 			memdelete(dict[j]);
 		}
 	}
-	for (int i = 0; i < strings.size(); i++)
+	for (size_t i = 0; i < strings.size(); i++)
 		memdelete_arr(strings[i]);
 	strings.clear();
 }
@@ -120,15 +120,19 @@ void ImGuiRendering::EndFrame()
     ImGui::EndFrame();
     Render();
     curr_pos = 0;
-    for (auto &it : pos_strings)
-        it = 0;
-
-	for (auto &it : strings)
-		for (int i = 0; i < limit; i++)
-			it[i] = '\0';
+	
+	for (auto it = pos_strings.begin(); it !=pos_strings.end(); it++)
+	{
+		*it = 0;
+	}
     
-    new_frame_rendering=false;
+	for (auto it = strings.begin(); it !=strings.end(); it++)
+	{
+		for (uint32_t i = 0; i < limit; i++)
+			*it[i] = '\0';
+	}
 
+    new_frame_rendering=false;
 }
 
 void ImGuiRendering::ReceiveInput(const Ref<InputEvent> &p_event)
