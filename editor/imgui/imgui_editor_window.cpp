@@ -20,7 +20,8 @@ ImGuiEditorWindow::ImGuiEditorWindow(/* args */)
 	ImGuiIO &io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 #ifndef JAVASCRIPT_ENABLED
-    io.IniFilename=EditorPaths::get_singleton()->get_config_dir().plus_file("imgui.ini").ascii().get_data();
+    ini_file_path=EditorPaths::get_singleton()->get_config_dir().plus_file("imgui.ini").ascii();
+	io.IniFilename = ini_file_path.ptr();
     print_line(io.IniFilename);
 #endif
     imgui_editor=memnew(ImGuiEditor);

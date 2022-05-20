@@ -8,7 +8,7 @@ ImGuiEditor::ImGuiEditor(/* args */)
 	game_viewport->set_disable_input(true);
     
     scene_viewport = memnew(SubViewport);
-	scene_viewport->set_disable_input(true);
+	// scene_viewport->set_disable_input(true);
 
     add_child(game_viewport);
     add_child(scene_viewport);
@@ -86,7 +86,7 @@ void ImGuiEditor::OnImGui()
                     scene_viewport->set_update_mode(SubViewport::UPDATE_ALWAYS);
                     RS::get_singleton()->viewport_attach_camera(scene_viewport->get_viewport_rid(), cam->get_camera());
 
-                    ImVec2 vcp=ImVec2(ImGui::GetWindowPos().x,ImGui::GetWindowPos().y+ImGui::GetFrameHeight());
+                    ImVec2 vcp = ImVec2(ImGui::GetWindowPos().x,ImGui::GetWindowPos().y+ImGui::GetFrameHeight());
                     Size2 view_size = Size2(ImGui::GetWindowSize().x,ImGui::GetWindowSize().y-ImGui::GetFrameHeight());
                     ImVec2 vcs = ImVec2(view_size.x+vcp.x,view_size.y+vcp.y);
                     scene_viewport->set_size(view_size);

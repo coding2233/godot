@@ -16,6 +16,7 @@ class ImGuiEditorWindow:public ImGuiBaseWindow
 	GDCLASS(ImGuiEditorWindow, ImGuiBaseWindow);
 private:
     String config_path;
+    CharString ini_file_path;
     ImGuiRendering* imgui_rendering;
     ImGuiEditor* imgui_editor;
 
