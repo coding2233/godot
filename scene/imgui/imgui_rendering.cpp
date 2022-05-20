@@ -21,7 +21,6 @@ ImGuiRendering::ImGuiRendering(/* args */)
 
     ImGuiIO &io = ImGui::GetIO();
     io.BackendFlags = 0;
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 #ifdef JAVASCRIPT_ENABLED
     io.IniFilename = NULL; 
 #else
@@ -129,7 +128,9 @@ void ImGuiRendering::EndFrame()
 	for (auto it = strings.begin(); it !=strings.end(); it++)
 	{
 		for (uint32_t i = 0; i < limit; i++)
-			*it[i] = '\0';
+		{
+			(*it)[i] = '\0';			
+		}
 	}
 
     new_frame_rendering=false;

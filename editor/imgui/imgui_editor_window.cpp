@@ -16,8 +16,10 @@ ImGuiEditorWindow::ImGuiEditorWindow(/* args */)
 
 	imgui_rendering = memnew(ImGuiRendering);
 	add_child(imgui_rendering);
+	
+	ImGuiIO &io = ImGui::GetIO();
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 #ifndef JAVASCRIPT_ENABLED
-    ImGuiIO &io = ImGui::GetIO();
     io.IniFilename=EditorPaths::get_singleton()->get_config_dir().plus_file("imgui.ini").ascii().get_data();
     print_line(io.IniFilename);
 #endif

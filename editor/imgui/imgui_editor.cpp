@@ -17,9 +17,6 @@ ImGuiEditor::~ImGuiEditor()
 
 void ImGuiEditor::OnImGui()
 {
-   
-    
-
     // Main window
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
     const ImGuiViewport* main_viewport = ImGui::GetMainViewport();
@@ -46,6 +43,9 @@ void ImGuiEditor::OnImGui()
             if(ImGui::Begin("Game",&show_game_view))
             {
                 ImGui::PopStyleVar();
+
+                // Node3DEditorViewport *viewport = Node3DEditor::get_singleton()->get_editor_viewport(viewport_idx);
+                // Camera3D *const cam = viewport->get_camera_3d();
 
                 //Set attach from show_game_view or other event...
                 Node *scene_root = SceneTreeDock::get_singleton()->get_editor_data()->get_edited_scene_root();
