@@ -7,7 +7,11 @@ ImGuiEditor::ImGuiEditor(/* args */)
     game_viewport = memnew(SubViewport);
 	game_viewport->set_disable_input(true);
     
+    scene_viewport = memnew(SubViewport);
+	scene_viewport->set_disable_input(true);
+
     add_child(game_viewport);
+    add_child(scene_viewport);
 }
 
 ImGuiEditor::~ImGuiEditor()
@@ -44,9 +48,6 @@ void ImGuiEditor::OnImGui()
             {
                 ImGui::PopStyleVar();
 
-                // Node3DEditorViewport *viewport = Node3DEditor::get_singleton()->get_editor_viewport(viewport_idx);
-                // Camera3D *const cam = viewport->get_camera_3d();
-
                 //Set attach from show_game_view or other event...
                 Node *scene_root = SceneTreeDock::get_singleton()->get_editor_data()->get_edited_scene_root();
                 if(scene_root)
@@ -68,7 +69,37 @@ void ImGuiEditor::OnImGui()
             ImGui::End();
         }
 
+
+        bool show_scene_view=true;
+        scene_viewport->set_update_mode(SubViewport::UPDATE_DISABLED);
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+        if(ImGui::Begin("Scene",&show_scene_view))
+        {
+            ImGui::PopStyleVar();
+
+            Node3DEditorViewport *viewport = Node3DEditor::get_singleton()->get_editor_viewport(2);
+            if (viewport)
+            {
+                Camera3D *const cam = viewport->get_camera_3d();
+                if (cam)
+                {
+                    scene_viewport->set_update_mode(SubViewport::UPDATE_ALWAYS);
+                    RS::get_singleton()->viewport_attach_camera(scene_viewport->get_viewport_rid(), cam->get_camera());
+
+                    ImVec2 vcp=ImVec2(ImGui::GetWindowPos().x,ImGui::GetWindowPos().y+ImGui::GetFrameHeight());
+                    Size2 view_size = Size2(ImGui::GetWindowSize().x,ImGui::GetWindowSize().y-ImGui::GetFrameHeight());
+                    ImVec2 vcs = ImVec2(view_size.x+vcp.x,view_size.y+vcp.y);
+                    scene_viewport->set_size(view_size);
+                    ImGui::GetWindowDrawList()->AddImage(scene_viewport->get_texture().ptr(),vcp,vcs);
+                }
+            }
+            
+            
+        }
+        ImGui::End();
     }
+
+
 
      //Menu bar
     AppMainMenuBar();

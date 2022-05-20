@@ -5,12 +5,15 @@
 #include "scene/imgui/imgui_control.h"
 #include "scene/3d/camera_3d.h"
 #include "editor/scene_tree_dock.h"
+#include "editor/plugins/node_3d_editor_plugin.h"
+#include "editor/debugger/editor_debugger_node.h"
 
 class ImGuiEditor:public ImGuiControl
 {
 private:
     // SubViewportContainer* viewport_container;
     SubViewport* game_viewport;
+    SubViewport* scene_viewport;
     
     bool show_game_view;
 
