@@ -2,7 +2,10 @@
 
 ImGuiEditor::ImGuiEditor(/* args */)
 {
-    show_game_view = true;
+    config_path = EditorPaths::get_singleton()->get_config_dir().plus_file("editor_imgui.cfg");
+
+    show_game_view = get_metadata("imgui_editor","show_game_view",true);
+    show_scene_view = get_metadata("imgui_editor","show_scene_view",true);
 
     game_viewport = memnew(SubViewport);
 	game_viewport->set_disable_input(true);
@@ -38,12 +41,14 @@ void ImGuiEditor::OnImGui()
 
         ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
         ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_PassthruCentralNode);
-        
+
+        bool check_show_view;        
         game_viewport->set_update_mode(SubViewport::UPDATE_DISABLED);
         if (show_game_view)
         {
             ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-           
+
+            check_show_view=show_game_view;
             if(ImGui::Begin("Game",&show_game_view))
             {
                 ImGui::PopStyleVar();
@@ -67,36 +72,48 @@ void ImGuiEditor::OnImGui()
                 }
             }
             ImGui::End();
+
+            if(check_show_view != show_game_view)
+            {
+                set_metadata("imgui_editor","show_game_view",show_game_view);
+            }
         }
 
-
-        bool show_scene_view=true;
         scene_viewport->set_update_mode(SubViewport::UPDATE_DISABLED);
-        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-        if(ImGui::Begin("Scene",&show_scene_view))
+        if(show_scene_view)
         {
-            ImGui::PopStyleVar();
+            ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 
-            Node3DEditorViewport *viewport = Node3DEditor::get_singleton()->get_editor_viewport(2);
-            if (viewport)
+            check_show_view=show_scene_view;
+            if(ImGui::Begin("Scene",&show_scene_view))
             {
-                Camera3D *const cam = viewport->get_camera_3d();
-                if (cam)
-                {
-                    scene_viewport->set_update_mode(SubViewport::UPDATE_ALWAYS);
-                    RS::get_singleton()->viewport_attach_camera(scene_viewport->get_viewport_rid(), cam->get_camera());
+                ImGui::PopStyleVar();
 
-                    ImVec2 vcp = ImVec2(ImGui::GetWindowPos().x,ImGui::GetWindowPos().y+ImGui::GetFrameHeight());
-                    Size2 view_size = Size2(ImGui::GetWindowSize().x,ImGui::GetWindowSize().y-ImGui::GetFrameHeight());
-                    ImVec2 vcs = ImVec2(view_size.x+vcp.x,view_size.y+vcp.y);
-                    scene_viewport->set_size(view_size);
-                    ImGui::GetWindowDrawList()->AddImage(scene_viewport->get_texture().ptr(),vcp,vcs);
+                Node3DEditorViewport *viewport = Node3DEditor::get_singleton()->get_editor_viewport(2);
+                if (viewport)
+                {
+                    Camera3D *const cam = viewport->get_camera_3d();
+                    if (cam)
+                    {
+                        scene_viewport->set_update_mode(SubViewport::UPDATE_ALWAYS);
+                        RS::get_singleton()->viewport_attach_camera(scene_viewport->get_viewport_rid(), cam->get_camera());
+
+                        ImVec2 vcp = ImVec2(ImGui::GetWindowPos().x,ImGui::GetWindowPos().y+ImGui::GetFrameHeight());
+                        Size2 view_size = Size2(ImGui::GetWindowSize().x,ImGui::GetWindowSize().y-ImGui::GetFrameHeight());
+                        ImVec2 vcs = ImVec2(view_size.x+vcp.x,view_size.y+vcp.y);
+                        scene_viewport->set_size(view_size);
+                        ImGui::GetWindowDrawList()->AddImage(scene_viewport->get_texture().ptr(),vcp,vcs);
+                    }
                 }
             }
-            
-            
+            ImGui::End();
+
+            if(check_show_view != show_scene_view)
+            {
+                set_metadata("imgui_editor","show_scene_view",show_scene_view);
+            }
+
         }
-        ImGui::End();
     }
 
 
@@ -136,6 +153,7 @@ void ImGuiEditor::AppMainMenuBar()
         {
             // ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen);
             ImGui::MenuItem("Game", NULL, &show_game_view);
+            ImGui::MenuItem("Scene", NULL, &show_scene_view);
             ImGui::EndMenu();
         }
         // HelpMarker(
@@ -175,4 +193,28 @@ void ImGuiEditor::_notification(int p_what)
     //         // game_viewport->set_handle_input_locally(false);
     //     break;
 	// }
+}
+
+
+// Metadata
+
+void ImGuiEditor::set_metadata(const String &p_section, const String &p_key, Variant p_data) 
+{
+	Ref<ConfigFile> cf = memnew(ConfigFile);
+	Error err;
+	err = cf->load(config_path);
+	ERR_FAIL_COND_MSG(err != OK && err != ERR_FILE_NOT_FOUND, "Cannot load editor settings from file '" + config_path + "'.");
+	cf->set_value(p_section, p_key, p_data);
+	err = cf->save(config_path);
+	ERR_FAIL_COND_MSG(err != OK, "Cannot save editor settings to file '" + config_path + "'.");
+}
+
+Variant ImGuiEditor::get_metadata(const String &p_section, const String &p_key, Variant p_default) const 
+{
+	Ref<ConfigFile> cf = memnew(ConfigFile);
+	Error err = cf->load(config_path);
+	if (err != OK) {
+		return p_default;
+	}
+	return cf->get_value(p_section, p_key, p_default);
 }
