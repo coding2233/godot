@@ -148,7 +148,7 @@ void editor_register_and_generate_icons(Ref<Theme> p_theme, bool p_dark_theme = 
 
 	// The names of the icons to never convert, even if one of their colors
 	// are contained in the dictionary above.
-	RBSet<StringName> exceptions;
+	HashSet<StringName> exceptions;
 
 	// Some of the colors below are listed for completeness sake.
 	// This can be a basis for proper palette validation later.
@@ -290,7 +290,7 @@ void editor_register_and_generate_icons(Ref<Theme> p_theme, bool p_dark_theme = 
 
 	// Use the accent color for some icons (checkbox, radio, toggle, etc.).
 	Dictionary accent_color_icon_color_dictionary;
-	RBSet<StringName> accent_color_icons;
+	HashSet<StringName> accent_color_icons;
 
 	const Color accent_color = p_theme->get_color(SNAME("accent_color"), SNAME("Editor"));
 	accent_color_icon_color_dictionary[Color::html("699ce8")] = accent_color;
@@ -393,8 +393,8 @@ Ref<Theme> create_editor_theme(const Ref<Theme> p_theme) {
 		preset_accent_color = Color(0.53, 0.67, 0.89);
 		preset_base_color = Color(0.24, 0.23, 0.27);
 		preset_contrast = default_contrast;
-	} else if (preset == "Grey") {
-		preset_accent_color = Color(0.72, 0.89, 1.00);
+	} else if (preset == "Gray") {
+		preset_accent_color = Color(0.44, 0.73, 0.98);
 		preset_base_color = Color(0.24, 0.24, 0.24);
 		preset_contrast = default_contrast;
 	} else if (preset == "Light") {
