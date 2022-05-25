@@ -15,6 +15,8 @@ ImGuiEditor::ImGuiEditor(/* args */)
 
     add_child(game_viewport);
     add_child(scene_viewport);
+
+    SetStyle();
 }
 
 ImGuiEditor::~ImGuiEditor()
@@ -114,8 +116,53 @@ void ImGuiEditor::OnImGui()
             }
 
         }
-    }
+    
 
+        bool show_theme_view=true;
+        if(ImGui::Begin("Theme",&show_theme_view))
+        {
+            // Ref<Theme> theme =get_theme().is_valid()?get_theme():Theme::get_default();
+           Ref<Theme> theme =EditorNode::get_singleton()->get_gui_base()->get_theme();
+            if(theme.is_valid())
+            {
+                List<StringName> theme_type_list;
+                theme->get_color_type_list(&theme_type_list);
+                for(StringName theme_type : theme_type_list)
+                {
+                    ImGui::Text((String()+theme_type).ascii().ptr());
+                    List<StringName> theme_type_color_list;
+                    theme->get_color_list(theme_type,&theme_type_color_list);
+                    for(StringName theme_color_type : theme_type_color_list)
+                    {
+                        ImGui::SameLine();
+                        // ImGui::Text(theme_color_type.ascii().ptr);
+                        Color theme_color = theme->get_color(theme_color_type,theme_type);
+                        ImGui::ColorButton((String()+theme_color_type).ascii().ptr(),ImVec4(theme_color.r,theme_color.g,theme_color.b,theme_color.a));
+                    }
+                }
+            }
+
+            ImGui::Text("--------------------------------------------------------");
+
+            ImGuiStyle& style = ImGui::GetStyle();
+            for (int i = 0; i < ImGuiCol_COUNT; i++)
+            {
+                if (i%10>0 && i!=ImGuiCol_COUNT-1)
+                {
+                    ImGui::SameLine();
+                }
+                
+                const ImVec4& col = style.Colors[i];
+                const char* name = ImGui::GetStyleColorName(i);
+                ImGui::ColorButton(name,col);
+            }
+
+            SetStyle();
+        }
+
+        ImGui::End();
+    
+    }
 
 
      //Menu bar
@@ -217,4 +264,22 @@ Variant ImGuiEditor::get_metadata(const String &p_section, const String &p_key, 
 		return p_default;
 	}
 	return cf->get_value(p_section, p_key, p_default);
+}
+
+void ImGuiEditor::SetStyle()
+{
+    ImGuiStyle* style = &ImGui::GetStyle();
+    Ref<Theme> editor_theme =EditorNode::get_singleton()->get_gui_base()->get_theme();
+    Color color = editor_theme->get_color("base_color","Editor");
+    ImVec4 imVec4(color.r,color.g,color.b,color.a);
+    memcpy(&imVec4,&style->Colors[ImGuiCol_WindowBg],sizeof(ImVec4));
+
+    color = editor_theme->get_color("base_color","Editor");
+    ImVec4 imVec402(color.r,color.g,color.b,color.a);
+    memcpy(&imVec402,&style->Colors[ImGuiCol_TitleBg],sizeof(ImVec4));
+
+    color = editor_theme->get_color("accent_color","Editor");
+    ImVec4 imVec403(color.r,color.g,color.b,color.a);
+    memcpy(&imVec403,&style->Colors[ImGuiCol_TitleBg],sizeof(ImVec4));
+
 }

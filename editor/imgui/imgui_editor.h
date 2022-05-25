@@ -8,6 +8,8 @@
 #include "editor/plugins/node_3d_editor_plugin.h"
 #include "editor/debugger/editor_debugger_node.h"
 #include "editor/editor_paths.h"
+#include "scene/resources/theme.h"
+#include "editor/editor_node.h"
 
 class ImGuiEditor:public ImGuiControl
 {
@@ -26,6 +28,8 @@ private:
 
     void set_metadata(const String &p_section, const String &p_key, Variant p_data);
     Variant get_metadata(const String &p_section, const String &p_key, Variant p_default) const;
+
+    void SetStyle();
 protected:
     void _notification(int p_what);
 

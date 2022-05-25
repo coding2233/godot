@@ -27,6 +27,7 @@ ImGuiRendering::ImGuiRendering(/* args */)
     // io.IniFilename=EditorPaths::get_singleton()->get_config_dir().plus_file("imgui.ini").ascii().get_data();
     // print_line(io.IniFilename);
 #endif
+	// ImGui::StyleColorsDark
     io.MouseDrawCursor = false;
     Vector2i window_size = DisplayServer::get_singleton()->window_get_size();
     io.DisplaySize = ImVec2(window_size.x, window_size.y);
