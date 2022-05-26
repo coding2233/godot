@@ -36,14 +36,4 @@ void ImGuiThemeWindow::OnDraw()
             }
         }
     }
-
-    ImGui::Text("--------------------------------------------------------");
-
-    ImGuiStyle& style = ImGui::GetStyle();
-    for (int i = 0; i < ImGuiCol_COUNT; i++)
-    {
-        const ImVec4& col = style.Colors[i];
-        const char* name = ImGui::GetStyleColorName(i);
-        ImGui::ColorButton(name,col);
-    }
 }

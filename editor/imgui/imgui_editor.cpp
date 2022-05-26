@@ -1,5 +1,6 @@
 #include "imgui_editor.h"
 #include "imgui_theme_window.h"
+#include "imgui_style_window.h"
 
 ImGuiEditor::ImGuiEditor(/* args */)
 {
@@ -18,9 +19,10 @@ ImGuiEditor::ImGuiEditor(/* args */)
     add_child(scene_viewport);
 
     dock_windows.append(new ImGuiThemeWindow());
+    dock_windows.append(new ImGuiStyleWindow());
     for (auto dw:dock_windows)
     {
-        dw->show = get_metadata("imgui_editor",dw->GetName(),false);
+        dw->show = (bool)get_metadata("imgui_editor",dw->GetName(),false);
     }
 
     SetStyle();
@@ -251,15 +253,15 @@ void ImGuiEditor::SetStyle()
 {
     ImGuiStyle& style = ImGui::GetStyle();
     Ref<Theme> editor_theme =EditorNode::get_singleton()->get_gui_base()->get_theme();
-    Color color = editor_theme->get_color("base_color","Editor");
+    Color color = editor_theme->get_color("dark_color_2","Editor");
     ImVec4 imVec4(color.r,color.g,color.b,color.a);
     style.Colors[ImGuiCol_WindowBg]=imVec4;
 
-    color = editor_theme->get_color("base_color","Editor");
+    color = editor_theme->get_color("dark_color_2","Editor");
     ImVec4 imVec402(color.r,color.g,color.b,color.a);
     style.Colors[ImGuiCol_TitleBg]=imVec402;
 
-    color = editor_theme->get_color("accent_color","Editor");
+    color = editor_theme->get_color("base_color","Editor");
     ImVec4 imVec403(color.r,color.g,color.b,color.a);
     style.Colors[ImGuiCol_TitleBgActive]=imVec403;
 }
