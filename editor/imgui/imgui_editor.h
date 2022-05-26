@@ -10,6 +10,7 @@
 #include "editor/editor_paths.h"
 #include "scene/resources/theme.h"
 #include "editor/editor_node.h"
+#include "imgui_dock_window.h"
 
 class ImGuiEditor:public ImGuiControl
 {
@@ -22,6 +23,8 @@ private:
     
     bool show_game_view;
     bool show_scene_view;
+
+    Vector<ImGuiDockWindow*> dock_windows;
 
     /* data */
     void AppMainMenuBar();

@@ -13,10 +13,10 @@ ImGuiEditorWindow::ImGuiEditorWindow(/* args */)
 	// set_transient(true);
 	// set_exclusive(true);
 	// set_clamp_to_embedder(true);
-
+	
 	imgui_rendering = memnew(ImGuiRendering);
 	add_child(imgui_rendering);
-	
+
 	ImGuiIO &io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 #ifndef JAVASCRIPT_ENABLED
@@ -24,14 +24,9 @@ ImGuiEditorWindow::ImGuiEditorWindow(/* args */)
 	io.IniFilename = ini_file_path.ptr();
     print_line(io.IniFilename);
 #endif
+
     imgui_editor=memnew(ImGuiEditor);
     imgui_rendering->add_child(imgui_editor);
-    // Button *btn = memnew(Button);
-    // add_child(btn);
-
-
-
-	// connect("window_input", callable_mp(this, &ImGuiEditorWindow::_input_from_window));
 
     RenderingServer::get_singleton()->connect("frame_post_draw",callable_mp(this,&ImGuiEditorWindow::_frame_post_draw));
 	RenderingServer::get_singleton()->connect("frame_pre_draw",callable_mp(this,&ImGuiEditorWindow::_frame_pre_draw));
