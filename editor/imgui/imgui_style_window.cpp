@@ -25,13 +25,18 @@ void ImGuiStyleWindow::OnDraw()
         ImGui::ColorButton(name,col);
         ImGui::SameLine();
         ImGui::SetNextItemWidth(100);
-        static char* test_text="Editor";
-        char *input_text=color_names[i].data();
-        if(ImGui::InputText("color",test_text,200))
+        if(color_names[i].size()==0)
         {
+            color_names[i].resize(200);
         }
-        ImGui::SameLine();
-        ImGui::SetNextItemWidth(100);
-        ImGui::InputText("theme",test_text,200);
+        char *input_text=color_names[i].data();
+        if(ImGui::InputText("color",input_text,200))
+        {
+            
+        }
+        color_names[i]=(std::string)input_text;
+        // ImGui::SameLine();
+        // ImGui::SetNextItemWidth(100);
+        // ImGui::InputText("theme",test_text,200);
     }
 }

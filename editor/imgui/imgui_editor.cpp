@@ -22,7 +22,7 @@ ImGuiEditor::ImGuiEditor(/* args */)
     dock_windows.append(new ImGuiStyleWindow());
     for (auto dw:dock_windows)
     {
-        dw->show = (bool)get_metadata("imgui_editor",dw->GetName(),false);
+        dw->show = get_metadata("imgui_editor",dw->GetName(),false);
     }
 
     SetStyle();
@@ -126,7 +126,7 @@ void ImGuiEditor::OnImGui()
             {
                 check_dock_view_show = dock_window->show;
                 // ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-                if(ImGui::Begin(dock_window->GetName(),&dock_window->show))
+                if(ImGui::Begin(dock_window->GetName(),&(dock_window->show)))
                 {
                     // ImGui::PopStyleVar();
                     dock_window->OnDraw();
@@ -181,7 +181,7 @@ void ImGuiEditor::AppMainMenuBar()
             ImGui::MenuItem("Scene", NULL, &show_scene_view);
             for (auto& dock_window : dock_windows)
             {
-                ImGui::MenuItem(dock_window->GetName(), NULL, &dock_window->show);
+                ImGui::MenuItem(dock_window->GetName(), NULL, &(dock_window->show));
             }
             
             ImGui::EndMenu();

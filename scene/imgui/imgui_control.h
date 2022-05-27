@@ -23,7 +23,7 @@
 class ImGuiControl : public Control 
 {
 	GDCLASS(ImGuiControl, Control);
-
+    std::map<String, std::vector<char>> input_texts; 
 protected:
     
 public:
