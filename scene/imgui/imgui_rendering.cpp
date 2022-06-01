@@ -1,6 +1,5 @@
 #include "imgui_rendering.h"
 
-
 ImGuiRendering::ImGuiRendering(/* args */)
 {
     new_frame_rendering=false;

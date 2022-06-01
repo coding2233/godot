@@ -35,5 +35,21 @@ void ImGuiThemeWindow::OnDraw()
                 ImGui::ColorButton((String()+theme_color_type).ascii().ptr(),ImVec4(theme_color.r,theme_color.g,theme_color.b,theme_color.a));
             }
         }
+
+        ImGui::Text("----------------------------");
+
+        List<StringName> font_type_list;
+        theme->get_font_type_list(&font_type_list);
+        for (StringName font_type:font_type_list)
+        {
+            ImGui::Text((String()+font_type).ascii().ptr());
+            List<StringName> font_list;
+            theme->get_font_list(font_type,&font_list);
+            for (StringName font_name:font_list)
+            {
+                ImGui::SameLine();
+                ImGui::Text((String()+font_name).ascii().ptr());
+            }
+        }
     }
 }
