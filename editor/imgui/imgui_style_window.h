@@ -5,7 +5,9 @@
 #include "scene/resources/theme.h"
 #include "editor/editor_node.h"
 
-#include "string.h"
+#include <string>
+#include <map>
+
 
 class ImGuiStyleWindow:public ImGuiDockWindow
 {
